@@ -3,7 +3,6 @@
 import RPi.GPIO as GPIO
 import MFRC522
 import signal
-import time
 # import urllib.request
 import urllib2
 
@@ -65,8 +64,6 @@ current_tag = ''
 # This loop keeps checking for chips. If one is near it will get the UID and authenticate
 while continue_reading:
 
-    # time.sleep(1)
-    #
     # Scan for cards
     (status,TagType) = reader.MFRC522_Request(reader.PICC_REQIDL)
 
