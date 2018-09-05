@@ -3,6 +3,7 @@
 import RPi.GPIO as GPIO
 import MFRC522
 import signal
+import sys
 # import urllib.request
 import urllib2
 
@@ -76,7 +77,10 @@ def execute_id(tag_id):
     card = map[tag_id]
     print("Executing '" + card['name'] + "'. Gonna curl '" + card['url'] + "'")
     # urllib.request.urlopen(card['url'])
-    urllib2.urlopen(card['url'])
+    try:
+        urllib2.urlopen(card['url'])
+    except:
+        print("Unexpected error:", sys.exc_info()[0])
 
 # Hook the SIGINT
 signal.signal(signal.SIGINT, end_read)
