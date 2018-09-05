@@ -35,6 +35,36 @@ map = {
         'id': 12344,
         'name': "Mobile Phone",
         'url': "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=SoaD"
+    },
+    '13648823361': {
+        'id': 13648823361,
+        'name': "Loewe",
+        'url': "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=SoaD"
+    },
+    '13647223446': {
+        'id': 13647223446,
+        'name': "Zebra",
+        'url': "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=SoaD"
+    },
+    '1364223226177': {
+        'id': 1364223226177,
+        'name': "Giraffe",
+        'url': "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=SoaD"
+    },
+    '1364209227190': {
+        'id': 1364209227190,
+        'name': "Hyaene",
+        'url': "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=SoaD"
+    },
+    '1364215226185': {
+        'id': 1364215226185,
+        'name': "Elefant",
+        'url': "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=SoaD"
+    },
+    '13648223553': {
+        'id': 13648223553,
+        'name': "Nilpferd",
+        'url': "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=SoaD"
     }
 }
 
