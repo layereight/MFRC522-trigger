@@ -1,20 +1,10 @@
 #!/usr/bin/python
+# -*- coding: utf8 -*-
 
-import RPi.GPIO as GPIO
-import MFRC522
-import signal
+import pirc522
 import sys
-# import urllib.request
 import urllib2
-
-continue_reading = True
-
-# Capture SIGINT for cleanup when the script is aborted
-def end_read(signal,frame):
-    global continue_reading
-    print("Ctrl+C captured, ending read.")
-    continue_reading = False
-    GPIO.cleanup()
+import time
 
 map = {
     '2081011237143': {
@@ -39,90 +29,99 @@ map = {
     },
     '13648823361': {
         'id': 13648823361,
-        'name': "Loewe",
+        'name': "Löwe",
         'url': "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=SoaD"
     },
     '13647223446': {
         'id': 13647223446,
         'name': "Zebra",
-        'url': "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=SoaD"
+        'url': "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=Traumzauberbaum"
     },
     '1364223226177': {
         'id': 1364223226177,
         'name': "Giraffe",
-        'url': "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=SoaD"
+        'url': "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=Kinderlieder"
     },
     '1364209227190': {
         'id': 1364209227190,
-        'name': "Hyaene",
+        'name': "Hyäne",
         'url': "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=SoaD"
     },
     '1364215226185': {
         'id': 1364215226185,
         'name': "Elefant",
-        'url': "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=SoaD"
+        'url': "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=Traumzauberbaum"
     },
     '13648223553': {
         'id': 13648223553,
         'name': "Nilpferd",
-        'url': "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=SoaD"
+        'url': "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=Kinderlieder"
     }
 }
 
-def execute_id(tag_id):
-    if (tag_id not in map):
+def execute_action(tag_id):
+    if tag_id not in map:
         print("No mapping for tag " + tag_id)
         return
     # print("CARD_ID " + card_id)
     card = map[tag_id]
     print("Executing '" + card['name'] + "'. Gonna curl '" + card['url'] + "'")
-    # urllib.request.urlopen(card['url'])
     try:
         urllib2.urlopen(card['url'])
     except:
-        print("Unexpected error:", sys.exc_info()[0])
+        print("Unable to open url " + card['url'], sys.exc_info()[0])
 
-# Hook the SIGINT
-signal.signal(signal.SIGINT, end_read)
 
-# Create an object of the class MFRC522
-reader = MFRC522.MFRC522()
-
-# Welcome message
-print("Welcome to the MFRC522 data read example")
+# welcome message
+print("Welcome to MFRC522-trigger!")
 print("Press Ctrl-C to stop.")
 
+# create a reader
+reader = pirc522.RFID()
 
 current_tag = ''
+count = 0
 
 # This loop keeps checking for chips. If one is near it will get the UID and authenticate
-while continue_reading:
+while True:
+    try:
+        # don't busy wait while there's a rfid tag near the reader
+        time.sleep(1)
 
-    # Scan for cards
-    (status,TagType) = reader.MFRC522_Request(reader.PICC_REQIDL)
 
-    # If a card is found
-    if status != reader.MI_OK:
-        continue
-        # print "Card detected"
+        # wait for reader to send an interrupt
+        reader.wait_for_tag()
 
-    # Get the UID of the card
-    (status,uid) = reader.MFRC522_Anticoll()
+        count += 1
+        print("reading " + str(count))
 
-    # If we have the UID, continue
-    if status == reader.MI_OK:
+        # scan for cards
+        (error, tag_type) = reader.request()
 
-        # Print UID
-        # print "Card read UID: %s,%s,%s,%s" % (uid[0], uid[1], uid[2], uid[3])
+        # on error continue and retry
+        if error:
+            continue
+
+        # get the UID of the card
+        (error, uid) = reader.anticoll()
+
+        # on error continue and retry
+        if error:
+            continue
+
+        # transform UID into string representation
         tag_id = ''.join((str(x) for x in uid))
 
+        # when we're still reading the same tag
         if current_tag == tag_id:
             continue
 
         current_tag = tag_id
 
-        # print('Tag detected: ' + tag_id)
-        execute_id(tag_id)
+        # execute an action for the reading tag
+        execute_action(tag_id)
+    except:
+        print("Shutdown!")
+        break
 
-
-
+reader.cleanup()
