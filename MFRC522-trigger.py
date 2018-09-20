@@ -3,13 +3,12 @@
 
 import pirc522
 import sys
+import os
 import urllib2
 import time
 import json
 
-
-config = json.loads(open('config.json', mode='r').read())
-
+config = json.loads(open(os.path.dirname(__file__) + '/config.json', mode='r').read())
 
 def execute_action(tag_id):
     if tag_id not in config:
