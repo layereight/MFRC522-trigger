@@ -21,7 +21,7 @@
   },
   "13648823361": {
     "id": 13648823361,
-    "name": "Loewe",
+    "name": "Löwe",
     "url": "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=Pettersson"
   },
   "13647223446": {
@@ -41,7 +41,7 @@
   },
   "1364209227190": {
     "id": 1364209227190,
-    "name": "Hyaene",
+    "name": "Hyäne",
     "url": "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=Maerchenstunde"
   },
   "13648223553": {

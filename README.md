@@ -20,11 +20,11 @@ dtoverlay=pi3-disable-bt
 enable_uart=1
 ```
 
-# inspiration
+# Inspiration
 
 * https://github.com/MiczFlor/RPi-Jukebox-RFID
 
-# links
+# Links
 
 * https://github.com/ondryaso/pi-rc522
 * http://raspi.tv/2013/how-to-use-interrupts-with-python-on-the-raspberry-pi-and-rpi-gpio
