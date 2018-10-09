@@ -7,25 +7,31 @@ import os
 import urllib2
 import time
 import json
+import logging
+import logging.config
+import logging.handlers
 
-config = json.loads(open(os.path.dirname(__file__) + '/config.json', mode='r').read())
+
+logging.config.fileConfig(os.path.dirname(__file__) + '/logging.ini')
+config = json.load(open(os.path.dirname(__file__) + '/config.json'))
+
 
 def execute_action(tag_id):
     if tag_id not in config:
-        print("No mapping for tag " + tag_id)
+        logging.warning("No mapping for tag " + tag_id)
         return
-    # print("CARD_ID " + card_id)
+    logging.debug("CARD_ID " + tag_id)
     card = config[tag_id]
-    print("Executing '" + card['name'] + "'. Gonna curl '" + card['url'] + "'")
+    logging.info("Executing '" + card['name'] + "'. Gonna curl '" + card['url'] + "'")
     try:
         urllib2.urlopen(card['url'])
     except:
-        print("Unable to open url " + card['url'], sys.exc_info()[0])
+        logging.error("Unable to open url " + card['url'], sys.exc_info()[0])
 
 
 # welcome message
-print("Welcome to MFRC522-trigger!")
-print("Press Ctrl-C to stop.")
+logging.info("Welcome to MFRC522-trigger!")
+logging.info("Press Ctrl-C to stop.")
 
 # create a reader
 reader = pirc522.RFID()
@@ -39,12 +45,11 @@ while True:
         # don't busy wait while there's a rfid tag near the reader
         time.sleep(1)
 
-
         # wait for reader to send an interrupt
         reader.wait_for_tag()
 
         count += 1
-        print("reading " + str(count))
+        logging.info("reading %d", count)
 
         # scan for cards
         (error, tag_type) = reader.request()
@@ -72,7 +77,7 @@ while True:
         # execute an action for the reading tag
         execute_action(tag_id)
     except:
-        print("Shutdown!")
+        logging.info("Shutdown!")
         break
 
 reader.cleanup()
