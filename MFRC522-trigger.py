@@ -34,7 +34,7 @@ logging.info("Welcome to MFRC522-trigger!")
 logging.info("Press Ctrl-C to stop.")
 
 # create a reader
-reader = pirc522.RFID()
+reader = pirc522.RFID(speed=100)
 
 current_tag = ''
 count = 0
@@ -45,11 +45,13 @@ while True:
         # don't busy wait while there's a rfid tag near the reader
         time.sleep(1)
 
+        reader.init()
+
         # wait for reader to send an interrupt
         reader.wait_for_tag()
 
         count += 1
-        logging.info("reading %d", count)
+        logging.debug("Reader loop %d", count)
 
         # scan for cards
         (error, tag_type) = reader.request()
@@ -76,8 +78,11 @@ while True:
 
         # execute an action for the reading tag
         execute_action(tag_id)
-    except:
+    except KeyboardInterrupt:
         logging.info("Shutdown!")
+        break
+    except Exception:
+        logging.exception("Unexpected exception '%s' occurred!", str(sys.exc_info()[0].__name__))
         break
 
 reader.cleanup()
