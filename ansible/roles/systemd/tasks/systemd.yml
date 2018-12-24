@@ -1,0 +1,17 @@
+---
+
+  - name: Copy custom systemd service file
+    template:
+      src: "{{ systemd_service_template }}"
+      dest: "/etc/systemd/system/{{ systemd_service }}.service"
+      mode: 0600
+      backup: yes
+    become: yes
+
+  - name: Enable custom systemd service
+    systemd:
+      name: "{{ systemd_service }}.service"
+      daemon_reload: yes
+      state: started
+      enabled: yes
+    become: yes

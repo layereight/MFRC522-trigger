@@ -1,0 +1,23 @@
+---
+#
+# typical run:
+#
+# ansible-playbook -i env/<ENVIRONMENT> MFRC522-trigger.yml
+#
+#
+
+- name: Install MFRC522-trigger as systemd service
+  hosts: volumio
+  gather_facts: false
+
+  vars:
+    systemd_service: "MFRC522-trigger"
+    systemd_service_template: "MFRC522-trigger.service.j2"
+
+    mfrc522:
+      user: "volumio"
+      group: "volumio"
+      executable: "/home/volumio/devel/MFRC522-trigger/MFRC522-trigger.py"
+
+  roles:
+    - systemd

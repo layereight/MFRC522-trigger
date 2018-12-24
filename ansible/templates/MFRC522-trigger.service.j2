@@ -1,0 +1,13 @@
+[Unit]
+Description=MFRC5222 RFID reader service
+After=network.target
+
+[Service]
+User={{ mfrc522.user }}
+Group={{ mfrc522.group }}
+Restart=always
+ExecStart={{ mfrc522.executable }}
+
+[Install]
+WantedBy=multi-user.target
+
