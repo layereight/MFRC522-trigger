@@ -8,7 +8,9 @@
 # Prerequisites
 
 ```
+$ sudo apt-get install python-dev
 $ sudo apt-get install python-pip
+$ sudo pip install RPi.GPIO
 $ sudo pip install spidev
 $ sudo pip install pi-rc522
 ```
@@ -28,6 +30,7 @@ enable_uart=1
 # Inspiration
 
 * https://github.com/MiczFlor/RPi-Jukebox-RFID
+* https://github.com/MiczFlor/RPi-Jukebox-RFID/issues/5
 
 # Links
 
