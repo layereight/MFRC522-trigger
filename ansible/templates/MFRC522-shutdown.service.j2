@@ -1,0 +1,11 @@
+[Unit]
+Description=Play shutdown sound when system goes down.
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/bin/true
+ExecStop=/usr/bin/aplay /home/volumio/devel/MFRC522-trigger/shutdown.wav
+
+[Install]
+WantedBy=multi-user.target

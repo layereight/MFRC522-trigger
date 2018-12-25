@@ -24,6 +24,10 @@
       systemd_service_template: "MFRC522-trigger.service.j2"
 
     - name: systemd
+      systemd_service: "MFRC522-shutdown"
+      systemd_service_template: "MFRC522-shutdown.service.j2"
+
+    - name: systemd
       systemd_service: "speakerbonnet-workaround"
       systemd_service_template: "speakerbonnet-workaround.service.j2"
       when: spwa | default(False)

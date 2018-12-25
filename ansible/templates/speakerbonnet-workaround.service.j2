@@ -1,5 +1,6 @@
 [Unit]
 Description=Invoke aplay from /dev/zero at system start.
+Before=MFRC522-shutdown.service
 
 [Service]
 Restart=always
