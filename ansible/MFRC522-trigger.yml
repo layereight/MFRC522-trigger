@@ -2,7 +2,7 @@
 #
 # typical run:
 #
-# ansible-playbook -i env/<ENVIRONMENT> MFRC522-trigger.yml
+# ansible-playbook -i env/<ENVIRONMENT> [-e spwa=True] MFRC522-trigger.yml
 #
 #
 
@@ -11,8 +11,6 @@
   gather_facts: false
 
   vars:
-    systemd_service: "MFRC522-trigger"
-    systemd_service_template: "MFRC522-trigger.service.j2"
 
     mfrc522:
       user: "volumio"
@@ -20,4 +18,12 @@
       executable: "/home/volumio/devel/MFRC522-trigger/MFRC522-trigger.py"
 
   roles:
-    - systemd
+
+    - name: systemd
+      systemd_service: "MFRC522-trigger"
+      systemd_service_template: "MFRC522-trigger.service.j2"
+
+    - name: systemd
+      systemd_service: "speakerbonnet-workaround"
+      systemd_service_template: "speakerbonnet-workaround.service.j2"
+      when: spwa | default(False)
