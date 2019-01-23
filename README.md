@@ -22,11 +22,6 @@ dtoverlay=pi3-disable-bt
 enable_uart=1
 ```
 
-# TODO
-
-* proper signal handling
-* shared memory Value without Manager
-
 # Inspiration
 
 * https://github.com/MiczFlor/RPi-Jukebox-RFID
