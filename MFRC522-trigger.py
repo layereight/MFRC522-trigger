@@ -34,7 +34,7 @@ logging.info("Welcome to MFRC522-trigger!")
 logging.info("Press Ctrl-C to stop.")
 
 # create a reader
-reader = pirc522.RFID(speed=100)
+reader = pirc522.RFID()
 
 current_tag = ''
 count = 0
@@ -42,11 +42,6 @@ count = 0
 # This loop keeps checking for chips. If one is near it will get the UID and authenticate
 while True:
     try:
-        # don't busy wait while there's a rfid tag near the reader
-        time.sleep(1)
-
-        reader.init()
-
         # wait for reader to send an interrupt
         reader.wait_for_tag()
 
@@ -72,6 +67,8 @@ while True:
 
         # when we're still reading the same tag
         if current_tag == tag_id:
+            # don't busy wait while there's a rfid tag near the reader
+            time.sleep(0.2)
             continue
 
         current_tag = tag_id
