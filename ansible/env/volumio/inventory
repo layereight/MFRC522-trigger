@@ -1,2 +1,2 @@
 [volumio]
-volumio3.local ansible_user=volumio ansible_ssh_pass=volumio ansible_sudo_pass=volumio
+volumio.local ansible_user=volumio ansible_ssh_pass=volumio ansible_sudo_pass=volumio
