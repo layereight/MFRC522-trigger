@@ -22,6 +22,16 @@ dtoverlay=pi3-disable-bt
 enable_uart=1
 ```
 
+# Roadmap
+
+* document config.json
+* Ansible playbook: install MFRC522-trigger via git clone
+* document Ansible playbook
+* document logging.ini
+* play beep sound when rfid tag is detected
+* toggle actions: execute the same action when a rfid tag is removed from the reader and re-detected
+* command actions: execute a system command as action
+
 # Inspiration
 
 * https://github.com/MiczFlor/RPi-Jukebox-RFID
