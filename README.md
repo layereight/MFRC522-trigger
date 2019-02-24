@@ -7,15 +7,17 @@
 
 # Prerequisites
 
+* ssh into your Raspberry Pi and execute
 ```
-$ sudo apt-get install python-dev
-$ sudo apt-get install python-pip
+$ sudo apt-get update
+$ sudo apt-get install python-dev python-pip vim
 $ sudo pip install RPi.GPIO
 $ sudo pip install spidev
 $ sudo pip install pi-rc522
 ```
-
-*/boot/config.txt*
+* edit Raspberry Pi's */boot/config.txt*
+* `$ sudo vi /boot/config.txt`
+* add the following lines somewhere in the file
 ```
 dtparam=spi=on
 dtoverlay=pi3-disable-bt
@@ -25,7 +27,7 @@ enable_uart=1
 # Roadmap
 
 * document config.json
-* Ansible playbook: install MFRC522-trigger via git clone
+* Ansible playbook: install MFRC522-trigger via git clone, do all prerequisites
 * document Ansible playbook
 * document logging.ini
 * play beep sound when rfid tag is detected
