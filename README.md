@@ -15,14 +15,14 @@ $ sudo pip install RPi.GPIO
 $ sudo pip install spidev
 $ sudo pip install pi-rc522
 ```
-* edit Raspberry Pi's */boot/config.txt*
-* `$ sudo vi /boot/config.txt`
+* edit Raspberry Pi's */boot/config.txt*: `$ sudo vi /boot/config.txt`
 * add the following lines somewhere in the file
 ```
 dtparam=spi=on
 dtoverlay=pi3-disable-bt
 enable_uart=1
 ```
+* reboot: `sudo reboot`
 
 # Roadmap
 
