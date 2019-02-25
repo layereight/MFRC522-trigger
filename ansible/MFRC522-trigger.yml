@@ -2,13 +2,105 @@
 #
 # typical run:
 #
-# ansible-playbook -i env/<ENVIRONMENT> [-e spwa=True] MFRC522-trigger.yml
+# ansible-playbook -i inventory MFRC522-trigger.yml
 #
+# optional extra params: [-e spwa=True]
 #
+
+- name: Install prerequisite software
+  hosts: volumio
+  gather_facts: false
+  tags: [ prerequisite_software ]
+
+  vars:
+
+    debian_packages:
+      - python-dev
+      - python-pip
+      - vim
+
+    python_packages:
+      - RPi.GPIO
+      - spidev
+
+  tasks:
+
+    - name: "Run apt-get update if cache is older than a week"
+      become: yes
+      apt:
+        update_cache: yes
+        cache_valid_time: 604800 # 1 week = 7 * 24 * 3600 seconds
+
+    - name: "Install prerequisite debian packages"
+      become: yes
+      apt:
+        name: "{{ debian_packages }}"
+
+    - name: "Install prerequisite pip packages"
+      become: yes
+      pip:
+        name: "{{ python_packages }}"
+
+    - name: "Install pi-rc522 python library"
+      become: yes
+      pip:
+        name: pi-rc522
+
+- name: Prepare Raspberry Pi's /boot/config.txt
+  hosts: volumio
+  gather_facts: false
+  tags: [ boot_config ]
+
+  tasks:
+
+    - name: Alter /boot/config.txt
+      become: yes
+      blockinfile:
+        path: /boot/config.txt
+        insertbefore: "#### Volumio i2s setting below: do not alter ####"
+        content: |
+          dtparam=spi=on
+          dtoverlay=pi3-disable-bt
+          enable_uart=1
+      register: boot_config
+
+    - name: Reboot the machine when /boot/config.txt was changed
+      become: yes
+      reboot:
+      when: boot_config.changed == true
+
+- name: Clone MFRC522-trigger from github
+  hosts: volumio
+  gather_facts: false
+  tags: [ clone ]
+
+  vars:
+
+    target_dir: "devel/MFRC522-trigger"
+
+  tasks:
+
+    - name: Create devel directory
+      file:
+        path: devel
+        state: directory
+
+    - name: Clone MFRC522-trigger from github
+      git:
+        repo: "https://github.com/layereight/MFRC522-trigger.git"
+        dest: "{{ target_dir }}"
+
+    - name: Copy config.json from sample file
+      copy:
+        src: "{{ target_dir }}/config.json.sample"
+        remote_src: yes
+        dest: "{{ target_dir }}/config.json"
+        force: no
 
 - name: Install MFRC522-trigger as systemd service
   hosts: volumio
   gather_facts: false
+  tags: [ systemd ]
 
   vars:
 
