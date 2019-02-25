@@ -27,7 +27,6 @@ enable_uart=1
 # Roadmap
 
 * document config.json
-* Ansible playbook: install MFRC522-trigger via git clone, do all prerequisites
 * document Ansible playbook
 * document logging.ini
 * play beep sound when rfid tag is detected
