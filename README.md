@@ -24,10 +24,65 @@ enable_uart=1
 ```
 * reboot: `sudo reboot`
 
+# Configuration
+
+## JSON schem
+
+```json
+{
+  "type": "object",
+  "patternProperties": {
+    "^[0-9]+$": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Alias name for the tag with the given id."
+        },
+        "url": {
+          "type": "string",
+          "title": "Default action. Url to curl when the tag is detected."
+        },
+        "onremove": {
+          "type": "string",
+          "title": "Optional action. Url to curl when the tag is removed."
+        },
+        "onredetect": {
+          "type": "string",
+          "title": "Optional action. Url to curl when the tag is re-detected after it was removed before."
+        }
+      },
+      "required": ["name", "url"]
+    }
+  }
+}
+```
+
+## Example configuration
+
+```json
+{
+  "1234567890123": {
+    "name": "A very nice tag",
+    "url": "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=my_playlist_1"
+  },
+  "9876543210987": {
+    "name": "An even nicer tag",
+    "url": "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=my_playlist_2",
+    "onremove": "http://localhost:3000/api/v1/commands/?cmd=toggle",
+    "onredetect": "http://localhost:3000/api/v1/commands/?cmd=toggle"
+  },
+  "5432109876543": {
+    "name": "This tag is also nice",
+    "url": "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=my_playlist_3"
+  }
+}
+```
+
 # Roadmap
 
-* document config.json
 * document Ansible playbook
+* Ansible playbook: set volumio logging level to error to reduce cpu load on Raspberry Pi Zero
 * document logging.ini
 * play beep sound when rfid tag is detected
 * command actions: execute a system command as action
@@ -37,6 +92,7 @@ enable_uart=1
 * toggle actions: execute the same action when a rfid tag is removed from the reader and re-detected
 * action on tag remove event
 * actino on tag re-detected event
+* document config.json
 
 # Inspiration
 
