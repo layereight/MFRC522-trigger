@@ -16,15 +16,25 @@ logging.config.fileConfig(os.path.dirname(__file__) + '/logging.ini')
 config = json.load(open(os.path.dirname(__file__) + '/config.json'))
 
 
-def execute_action(tag_id):
+def execute_action(action, tag_id):
+    logging.debug("Action " + action + " for tag " + tag_id)
     if tag_id not in config:
         logging.warning("No mapping for tag " + tag_id)
         return
     logging.debug("CARD_ID " + tag_id)
     card = config[tag_id]
-    logging.info("Executing '" + card['name'] + "'. Gonna curl '" + card['url'] + "'")
+
+    mapped_action = action
+    if action not in card and action == "onredetect":
+        mapped_action = "url"
+    elif action not in card:
+        logging.debug("No action " + action + " for tag " + tag_id)
+        return
+
+    logging.info("Executing '" + card['name'] + "'[" + mapped_action + "]. Gonna curl '" + card[mapped_action] + "'")
+
     try:
-        urllib2.urlopen(card['url'])
+        urllib2.urlopen(card[mapped_action])
     except:
         logging.error("Unable to open url " + card['url'], sys.exc_info()[0])
 
@@ -37,6 +47,7 @@ logging.info("Press Ctrl-C to stop.")
 reader = pirc522.RFID()
 
 current_tag = ''
+last_tag = ''
 count = 0
 polling = False
 
@@ -66,6 +77,7 @@ while True:
         # on error continue and retry
         if error:
             # logging.info("error anticoll")
+            execute_action("onremove", current_tag)
             current_tag = ''
             polling = False
             continue
@@ -83,8 +95,12 @@ while True:
 
         current_tag = tag_id
 
+        action = "onredetect" if current_tag == last_tag else "url"
+
         # execute an action for the reading tag
-        execute_action(tag_id)
+        execute_action(action, tag_id)
+
+        last_tag = current_tag
     except KeyboardInterrupt:
         logging.info("Shutdown!")
         break

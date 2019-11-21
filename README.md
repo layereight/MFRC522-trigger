@@ -30,8 +30,13 @@ enable_uart=1
 * document Ansible playbook
 * document logging.ini
 * play beep sound when rfid tag is detected
-* toggle actions: execute the same action when a rfid tag is removed from the reader and re-detected
 * command actions: execute a system command as action
+
+# Roadmap done
+
+* toggle actions: execute the same action when a rfid tag is removed from the reader and re-detected
+* action on tag remove event
+* actino on tag re-detected event
 
 # Inspiration
 
