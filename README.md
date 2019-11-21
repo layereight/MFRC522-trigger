@@ -26,7 +26,7 @@ enable_uart=1
 
 # Configuration
 
-## JSON schem
+## JSON schema
 
 ```json
 {
@@ -49,7 +49,7 @@ enable_uart=1
         },
         "onredetect": {
           "type": "string",
-          "title": "Optional action. Url to curl when the tag is re-detected after it was removed before."
+          "title": "Optional action. Url to curl when the tag is re-detected after it was removed."
         }
       },
       "required": ["name", "url"]
