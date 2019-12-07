@@ -69,8 +69,8 @@ enable_uart=1
   "9876543210987": {
     "name": "An even nicer tag",
     "url": "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=my_playlist_2",
-    "onremove": "http://localhost:3000/api/v1/commands/?cmd=toggle",
-    "onredetect": "http://localhost:3000/api/v1/commands/?cmd=toggle"
+    "onremove": "http://localhost:3000/api/v1/commands/?cmd=pause",
+    "onredetect": "http://localhost:3000/api/v1/commands/?cmd=play"
   },
   "5432109876543": {
     "name": "This tag is also nice",
