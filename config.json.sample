@@ -18,6 +18,8 @@
   "1364223226177": {
     "name": "Giraffe",
     "url": "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=Giraffenaffen"
+    "onremove": "http://localhost:3000/api/v1/commands/?cmd=pause",
+    "onredetect": "http://localhost:3000/api/v1/commands/?cmd=play"
   },
   "1364209227190": {
     "name": "Hyäne",
