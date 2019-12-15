@@ -15,8 +15,8 @@
   vars:
 
     debian_packages:
-      - python-dev
-      - python-pip
+      - python3
+      - python3-pip
       - vim
 
     python_packages:
@@ -40,11 +40,13 @@
       become: yes
       pip:
         name: "{{ python_packages }}"
+        executable: pip3
 
     - name: "Install pi-rc522 python library"
       become: yes
       pip:
         name: pi-rc522
+        executable: pip3
 
 - name: Prepare Raspberry Pi's /boot/config.txt
   hosts: volumio

@@ -6,6 +6,7 @@ After=network.target
 User={{ mfrc522.user }}
 Group={{ mfrc522.group }}
 Restart=always
+Environment="LANG=en_US.UTF-8"
 ExecStart={{ mfrc522.executable }}
 
 [Install]

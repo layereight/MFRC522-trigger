@@ -1,42 +1,53 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf8 -*-
 
 import pirc522
 import sys
 import os
-import urllib2
+import urllib.request
 import time
 import json
 import logging
 import logging.config
 import logging.handlers
-
+from enum import Enum, unique
 
 logging.config.fileConfig(os.path.dirname(__file__) + '/logging.ini')
-config = json.load(open(os.path.dirname(__file__) + '/config.json'))
+config = json.load(open(os.path.dirname(__file__) + '/config.json', encoding="utf-8"))
 
 
-def execute_action(action, tag_id):
-    logging.debug("Action " + action + " for tag " + tag_id)
+@unique
+class NfcEvent(Enum):
+    DETECT = 1
+    REMOVE = 2
+    REDETECT = 3
+
+
+def execute_action(event: NfcEvent, tag_id: str):
     if tag_id not in config:
         logging.warning("No mapping for tag " + tag_id)
         return
-    logging.debug("CARD_ID " + tag_id)
+    logging.debug("Action " + event.name + " for tag " + tag_id)
     card = config[tag_id]
 
-    mapped_action = action
-    if action not in card and action == "onredetect":
-        mapped_action = "url"
-    elif action not in card:
-        logging.debug("No action " + action + " for tag " + tag_id)
+    event_to_key_map = {
+        NfcEvent.DETECT : "url",
+        NfcEvent.REMOVE : "onremove",
+        NfcEvent.REDETECT: "onredetect" if "onredetect" in card else "url"
+    }
+
+    key = event_to_key_map[event]
+
+    if key not in card:
+        logging.debug("No event key '" + key + "' for tag " + tag_id)
         return
 
-    logging.info("Executing '" + card['name'] + "'[" + mapped_action + "]. Gonna curl '" + card[mapped_action] + "'")
+    logging.info("Executing '" + card['name'] + "'[" + key + "]. Gonna curl '" + card[key] + "'")
 
     try:
-        urllib2.urlopen(card[mapped_action])
-    except:
-        logging.error("Unable to open url " + card['url'], sys.exc_info()[0])
+        urllib.request.urlopen(card[key])
+    except Exception:
+        logging.error("Unable to open url " + card[key], sys.exc_info()[0])
 
 
 # welcome message
@@ -77,7 +88,7 @@ while True:
         # on error continue and retry
         if error:
             # logging.info("error anticoll")
-            execute_action("onremove", current_tag)
+            execute_action(NfcEvent.REMOVE, current_tag)
             current_tag = ''
             polling = False
             continue
@@ -95,10 +106,8 @@ while True:
 
         current_tag = tag_id
 
-        action = "onredetect" if current_tag == last_tag else "url"
-
         # execute an action for the reading tag
-        execute_action(action, tag_id)
+        execute_action(NfcEvent.REDETECT if current_tag == last_tag else NfcEvent.DETECT, tag_id)
 
         last_tag = current_tag
     except KeyboardInterrupt:
