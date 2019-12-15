@@ -91,6 +91,7 @@
       git:
         repo: "https://github.com/layereight/MFRC522-trigger.git"
         dest: "{{ target_dir }}"
+        force: yes
 
     - name: Copy config.json from sample file
       copy:
