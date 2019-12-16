@@ -33,28 +33,75 @@ enable_uart=1
 ```json
 {
   "type": "object",
+  "title": "The root schema",
   "patternProperties": {
     "^[0-9]+$": {
       "type": "object",
+      "title": "Schema holding name and actions for a tag",
+      "required": ["name", "ondetect"],
       "properties": {
         "name": {
           "type": "string",
           "title": "Alias name for the tag with the given id."
         },
-        "url": {
-          "type": "string",
-          "title": "Default action. Url to curl when the tag is detected."
+        "ondetect": {
+          "type": "object",
+          "title": "Default action to trigger when the tag with the given id is detected.",
+          "required": ["type"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "title": "Type of action. One of [curl, command]."
+            },
+            "url": {
+              "type": "string",
+              "title": "Url to curl when the tag is detected."
+            },
+            "command": {
+              "type": "string",
+              "title": "Command to execute when the tag is detected."
+            }
+          }
         },
         "onremove": {
-          "type": "string",
-          "title": "Optional action. Url to curl when the tag is removed."
+          "type": "object",
+          "title": "Optional action to trigger when the tag with the given id is removed.",
+          "required": ["type"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "title": "Type of action. One of [curl, command]."
+            },
+            "url": {
+              "type": "string",
+              "title": "Url to curl when the tag is detected."
+            },
+            "command": {
+              "type": "string",
+              "title": "Command to execute when the tag is detected."
+            }
+          }          
         },
         "onredetect": {
-          "type": "string",
-          "title": "Optional action. Url to curl when the tag is re-detected after it was removed."
+          "type": "object",
+          "title": "Optional action to trigger when the tag with the given id is re-detected after it was removed",
+          "required": ["type"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "title": "Type of action. One of [curl, command]."
+            },
+            "url": {
+              "type": "string",
+              "title": "Url to curl when the tag is detected."
+            },
+            "command": {
+              "type": "string",
+              "title": "Command to execute when the tag is detected."
+            }
+          }
         }
-      },
-      "required": ["name", "url"]
+      }
     }
   }
 }
@@ -66,17 +113,32 @@ enable_uart=1
 {
   "1234567890123": {
     "name": "A very nice tag",
-    "url": "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=my_playlist_1"
+    "ondetect": {
+      "type": "curl",
+      "url": "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=my_playlist_1"
+    }
   },
   "9876543210987": {
     "name": "An even nicer tag",
-    "url": "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=my_playlist_2",
-    "onremove": "http://localhost:3000/api/v1/commands/?cmd=pause",
-    "onredetect": "http://localhost:3000/api/v1/commands/?cmd=play"
+    "ondetect": {
+      "type": "curl",
+      "url": "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=my_playlist_2"
+    },
+    "onremove": {
+      "type": "curl",
+      "url": "http://localhost:3000/api/v1/commands/?cmd=pause"
+    },
+    "onredetect": {
+      "type": "curl",
+      "url": "http://localhost:3000/api/v1/commands/?cmd=play"
+    }
   },
   "5432109876543": {
     "name": "This tag is also nice",
-    "url": "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=my_playlist_3"
+    "ondetect": {
+      "type": "command",
+      "command": "sudo shutdown -h now"
+    }
   }
 }
 ```
