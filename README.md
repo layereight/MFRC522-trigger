@@ -1,7 +1,9 @@
 # MFRC522-trigger
 
 * trigger arbitrary action when the MFRC522 detects an NFC tag
-* currently only supports curling a URL
+* supported actions are
+  * curling a URL
+  * executing a command line
 * based on [pirc522](https://github.com/ondryaso/pi-rc522) which is based on the famous 
 [MFRC522-python](https://github.com/mxgxw/MFRC522-python)
 
@@ -85,10 +87,11 @@ enable_uart=1
 * Ansible playbook: set volumio logging level to error to reduce cpu load on Raspberry Pi Zero
 * document logging.ini
 * play beep sound when rfid tag is detected
-* command actions: execute a system command as action
 
 # Roadmap done
 
+* command actions: execute a system command as action
+* migrate to python3
 * toggle actions: execute the same action when a rfid tag is removed from the reader and re-detected
 * action on tag remove event
 * actino on tag re-detected event

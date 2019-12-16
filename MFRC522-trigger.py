@@ -5,6 +5,7 @@ import pirc522
 import sys
 import os
 import urllib.request
+import subprocess
 import time
 import json
 import logging
@@ -23,6 +24,25 @@ class NfcEvent(Enum):
     REDETECT = 3
 
 
+def execute_curl(url):
+    logging.info("Gonna curl '" + url + "'")
+    try:
+        urllib.request.urlopen(url)
+    except Exception:
+        logging.error("Unable to open url " + url, sys.exc_info()[0])
+
+
+def execute_command(command):
+    logging.info("Gonna execute '" + command + "'")
+    subprocess.call(command, shell=True)
+
+
+ACTION_MAP = {
+    "curl": lambda action: execute_curl(action["url"]),
+    "command": lambda action: execute_command(action["command"])
+}
+
+
 def execute_action(event: NfcEvent, tag_id: str):
     if tag_id not in config:
         logging.warning("No mapping for tag " + tag_id)
@@ -31,9 +51,9 @@ def execute_action(event: NfcEvent, tag_id: str):
     card = config[tag_id]
 
     event_to_key_map = {
-        NfcEvent.DETECT : "url",
+        NfcEvent.DETECT : "ondetect" if "ondetect" in card else "url",
         NfcEvent.REMOVE : "onremove",
-        NfcEvent.REDETECT: "onredetect" if "onredetect" in card else "url"
+        NfcEvent.REDETECT: "onredetect" if "onredetect" in card else "ondetect" if "ondetect" in card else "url"
     }
 
     key = event_to_key_map[event]
@@ -42,12 +62,15 @@ def execute_action(event: NfcEvent, tag_id: str):
         logging.debug("No event key '" + key + "' for tag " + tag_id)
         return
 
-    logging.info("Executing '" + card['name'] + "'[" + key + "]. Gonna curl '" + card[key] + "'")
+    logging.info("Executing '" + card['name'] + "'[" + key + "].")
 
-    try:
-        urllib.request.urlopen(card[key])
-    except Exception:
-        logging.error("Unable to open url " + card[key], sys.exc_info()[0])
+    if type(card[key]) is dict:
+        action = card[key]
+
+        ACTION_MAP[action["type"]](action)
+        return
+
+    execute_curl(card[key])
 
 
 # welcome message
