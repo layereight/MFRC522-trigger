@@ -94,7 +94,7 @@ enable_uart=1
 * migrate to python3
 * toggle actions: execute the same action when a rfid tag is removed from the reader and re-detected
 * action on tag remove event
-* actino on tag re-detected event
+* action on tag re-detected event
 * document config.json
 
 # Inspiration
