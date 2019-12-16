@@ -12,10 +12,10 @@
 * ssh into your Raspberry Pi and execute
 ```
 $ sudo apt-get update
-$ sudo apt-get install python-dev python-pip vim
-$ sudo pip install RPi.GPIO
-$ sudo pip install spidev
-$ sudo pip install pi-rc522
+$ sudo apt-get install python3 python3-pip vim
+$ sudo pip3 install RPi.GPIO
+$ sudo pip3 install spidev
+$ sudo pip3 install pi-rc522
 ```
 * edit Raspberry Pi's */boot/config.txt*: `$ sudo vi /boot/config.txt`
 * add the following lines somewhere in the file
