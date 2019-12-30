@@ -35,7 +35,8 @@ enable_uart=1
 
 # Automated Installation
 
-* automated installation can be achieved using [Ansible](https://docs.ansible.com/ansible/latest/index.html)
+* all the steps from the manual installation can be done automatically
+* automated installation is achieved using [Ansible](https://docs.ansible.com/ansible/latest/index.html)
 * Ansible is an automation tool, if you wanna know more about it have a look at 
   https://docs.ansible.com/ansible/latest/index.html
 * install Ansible on your local machine https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html
