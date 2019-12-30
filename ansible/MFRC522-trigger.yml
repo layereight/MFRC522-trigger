@@ -8,7 +8,7 @@
 #
 
 - name: Install prerequisite software
-  hosts: volumio
+  hosts: my_pi
   gather_facts: false
   tags: [ prerequisite_software ]
 
@@ -49,7 +49,7 @@
         executable: pip3
 
 - name: Prepare Raspberry Pi's /boot/config.txt
-  hosts: volumio
+  hosts: my_pi
   gather_facts: false
   tags: [ boot_config ]
 
@@ -72,7 +72,7 @@
       when: boot_config.changed == true
 
 - name: Clone MFRC522-trigger from github
-  hosts: volumio
+  hosts: my_pi
   gather_facts: false
   tags: [ clone ]
 
@@ -101,7 +101,7 @@
         force: no
 
 - name: Install MFRC522-trigger as systemd service
-  hosts: volumio
+  hosts: my_pi
   gather_facts: false
   tags: [ systemd ]
 

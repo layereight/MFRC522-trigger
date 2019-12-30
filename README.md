@@ -1,6 +1,7 @@
 # MFRC522-trigger
 
 * trigger arbitrary action when the MFRC522 detects an NFC tag
+* the MFRC522 is connected to a Raspberry Pi, for the wiring see [pirc522](https://github.com/ondryaso/pi-rc522#connecting)
 * supported actions are
   * curling a URL
   * executing a command line
@@ -8,6 +9,12 @@
 [MFRC522-python](https://github.com/mxgxw/MFRC522-python)
 
 # Prerequisites
+
+* python3
+* python modules RPi.GPIO, spidev, pi-rc522
+* enable the [SPI](https://en.wikipedia.org/wiki/Serial_Peripheral_Interface) on the Raspberry Pi
+
+# Manual Installation
 
 * ssh into your Raspberry Pi and execute
 ```
@@ -25,6 +32,85 @@ dtoverlay=pi3-disable-bt
 enable_uart=1
 ```
 * reboot: `sudo reboot`
+
+# Automated Installation
+
+* automated installation can be achieved using [Ansible](https://docs.ansible.com/ansible/latest/index.html)
+* Ansible is an automation tool, if you wanna know more about it have a look at 
+  https://docs.ansible.com/ansible/latest/index.html
+* install Ansible on your local machine https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html
+* on your local machine clone the repo https://github.com/layereight/MFRC522-trigger
+```
+$ git clone https://github.com/layereight/MFRC522-trigger.git
+$ cd MFRC522-trigger/ansible
+$ vi inventory
+```
+* replace the the contents of the file *inventory* to point to your music box (e.g. my_raspi_host)
+```
+[my_pi]
+my_raspi_host ansible_host=192.168.1.100 ansible_user=pi ansible_ssh_pass=raspberry
+```
+* execute the ansible playbook, it runs for roughly 10 minutes, so go grab a coffee ;-)
+```
+$ ansible-playbook -i inventory MFRC522-trigger.yml 
+
+PLAY [Install prerequisite software] ************************************************
+
+TASK [Run apt-get update if cache is older than a week] *****************************
+ok: [my_raspi_host]
+
+TASK [Install prerequisite debian packages] *****************************************
+changed: [my_raspi_host]
+
+TASK [Install prerequisite pip packages] ********************************************
+changed: [my_raspi_host]
+
+TASK [Install pi-rc522 python library] **********************************************
+changed: [my_raspi_host]
+
+PLAY [Prepare Raspberry Pi's /boot/config.txt] **************************************
+
+TASK [Alter /boot/config.txt] *******************************************************
+changed: [my_raspi_host]
+
+TASK [Reboot the machine when /boot/config.txt was changed] *************************
+changed: [my_raspi_host]
+
+PLAY [Clone MFRC522-trigger from github] ********************************************
+
+TASK [Create devel directory] *******************************************************
+changed: [my_raspi_host]
+
+TASK [Clone MFRC522-trigger from github] ********************************************
+changed: [my_raspi_host]
+
+TASK [Copy config.json from sample file] ********************************************
+changed: [my_raspi_host]
+
+PLAY [Install MFRC522-trigger as systemd service] ***********************************
+
+TASK [systemd : Copy custom systemd service file] ***********************************
+changed: [my_raspi_host]
+
+TASK [systemd : Enable custom systemd service] **************************************
+changed: [my_raspi_host]
+
+TASK [systemd : Copy custom systemd service file] ***********************************
+changed: [my_raspi_host]
+
+TASK [systemd : Enable custom systemd service] **************************************
+changed: [my_raspi_host]
+
+TASK [systemd : Copy custom systemd service file] ***********************************
+skipping: [my_raspi_host]
+
+TASK [systemd : Enable custom systemd service] **************************************
+skipping: [my_raspi_host]
+
+PLAY RECAP **************************************************************************
+my_raspi_host            : ok=13   changed=12   unreachable=0    failed=0
+
+```
 
 # Configuration
 
@@ -145,13 +231,14 @@ enable_uart=1
 
 # Roadmap
 
-* document Ansible playbook
 * Ansible playbook: set volumio logging level to error to reduce cpu load on Raspberry Pi Zero
 * document logging.ini
 * play beep sound when rfid tag is detected
+* OTA updates
 
 # Roadmap done
 
+* document Ansible playbook
 * command actions: execute a system command as action
 * migrate to python3
 * toggle actions: execute the same action when a rfid tag is removed from the reader and re-detected
