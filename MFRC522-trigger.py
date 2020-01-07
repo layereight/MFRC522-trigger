@@ -34,7 +34,7 @@ def execute_curl(url):
 
 def execute_command(command):
     logging.info("Gonna execute '" + command + "'")
-    subprocess.call(command, shell=True)
+    subprocess.call(command, shell=True, stdout=subprocess.DEVNULL)
 
 
 ACTION_MAP = {
