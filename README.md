@@ -234,7 +234,7 @@ my_raspi_host            : ok=13   changed=12   unreachable=0    failed=0
 
 * quit with error when config is broken
 * python unit tests
-* travis ci2 
+* travis ci
 * Ansible playbook: set volumio logging level to error to reduce cpu load on Raspberry Pi Zero
 * document logging.ini
 * play beep sound when rfid tag is detected
