@@ -51,8 +51,8 @@ def execute_action(event: NfcEvent, tag_id: str):
     card = config[tag_id]
 
     event_to_key_map = {
-        NfcEvent.DETECT : "ondetect" if "ondetect" in card else "url",
-        NfcEvent.REMOVE : "onremove",
+        NfcEvent.DETECT: "ondetect" if "ondetect" in card else "url",
+        NfcEvent.REMOVE: "onremove",
         NfcEvent.REDETECT: "onredetect" if "onredetect" in card else "ondetect" if "ondetect" in card else "url"
     }
 

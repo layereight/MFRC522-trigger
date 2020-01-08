@@ -46,7 +46,7 @@ $ git clone https://github.com/layereight/MFRC522-trigger.git
 $ cd MFRC522-trigger/ansible
 $ vi inventory
 ```
-* replace the the contents of the file *inventory* to point to your music box (e.g. my_raspi_host)
+* replace the contents of the file *inventory* to point to your music box (e.g. my_raspi_host)
 ```
 [my_pi]
 my_raspi_host ansible_host=192.168.1.100 ansible_user=pi ansible_ssh_pass=raspberry
@@ -232,6 +232,9 @@ my_raspi_host            : ok=13   changed=12   unreachable=0    failed=0
 
 # Roadmap
 
+* quit with error when config is broken
+* python unit tests
+* travis ci2 
 * Ansible playbook: set volumio logging level to error to reduce cpu load on Raspberry Pi Zero
 * document logging.ini
 * play beep sound when rfid tag is detected
