@@ -8,7 +8,10 @@
   },
   "25324884211130": {
     "name": "Pause/Play Tag",
-    "url": "http://localhost:3000/api/v1/commands/?cmd=toggle"
+    "ondetect": {
+      "type": "curl",
+      "url": "http://localhost:3000/api/v1/commands/?cmd=toggle"
+    }
   },
   "2081011237143": {
     "name": "Checkcard",
