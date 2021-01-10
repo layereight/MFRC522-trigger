@@ -46,11 +46,11 @@
     "ondetect": {
       "type": "curl",
       "url": "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=Giraffenaffen"
-    }
+    },
     "onremove": {
       "type": "curl",
-      "url": "http://localhost:3000/api/v1/commands/?cmd=pause",
-    }
+      "url": "http://localhost:3000/api/v1/commands/?cmd=pause"
+    },
     "onredetect": {
       "type": "curl",
       "url": "http://localhost:3000/api/v1/commands/?cmd=play"
