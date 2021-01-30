@@ -19,18 +19,22 @@ class ResolveActionsTestCase(unittest.TestCase):
             },
             "222": {
                 "name": "detect_remove",
-                "ondetect" : {
-                    "type": "curl",
-                    "url": "http://localhost:3000/?cmd=pause&name=detect_remove"
-                },
-                "onremove": {
-                    "type": "curl",
-                    "url": "http://localhost:3000/?cmd=play&name=detect_remove"
-                }
+                "ondetect": [
+                    {
+                        "type": "curl",
+                        "url": "http://localhost:3000/?cmd=pause&name=detect_remove"
+                    }
+                ],
+                "onremove": [
+                    {
+                        "type": "curl",
+                        "url": "http://localhost:3000/?cmd=play&name=detect_remove"
+                    }
+                ]
             },
             "333": {
                 "name": "all_events",
-                "ondetect" : {
+                "ondetect": {
                     "type": "curl",
                     "url": "http://localhost:3000/?cmd=playplaylist&name=all_events"
                 },

@@ -17,25 +17,28 @@ def resolve(config: dict, event: NfcEvent, tag_id: str):
         return []
 
     # logging.debug("Action " + event.name + " for tag " + tag_id)
-    card = config[tag_id]
+    config_tag = config[tag_id]
 
     event_to_key_map = {
-        NfcEvent.DETECT: "ondetect" if "ondetect" in card else "url",
+        NfcEvent.DETECT: "ondetect" if "ondetect" in config_tag else "url",
         NfcEvent.REMOVE: "onremove",
-        NfcEvent.REDETECT: "onredetect" if "onredetect" in card else "ondetect" if "ondetect" in card else "url"
+        NfcEvent.REDETECT: "onredetect" if "onredetect" in config_tag else "ondetect" if "ondetect" in config_tag else "url"
     }
 
-    key = event_to_key_map[event]
+    event_key = event_to_key_map[event]
 
-    if key not in card:
-        logging.debug("No event key '" + key + "' for tag " + tag_id)
+    if event_key not in config_tag:
+        logging.debug("No event key '" + event_key + "' for tag " + tag_id)
         return []
 
-    logging.info("Executing '" + card['name'] + "'[" + key + "].")
+    logging.info("Executing '" + config_tag['name'] + "'[" + event_key + "].")
 
-    if type(card[key]) is dict:
-        action = card[key]
-
-        return [action]
-
-    return [ {"type": "curl", "url": card[key]} ]
+    # configure list of actions
+    if type(config_tag[event_key]) is list:
+        return config_tag[event_key]
+    # legacy: just one action
+    elif type(config_tag[event_key]) is dict:
+        return [config_tag[event_key]]
+    # very legacy: just url
+    else:
+        return [{"type": "curl", "url": config_tag[event_key]}]
