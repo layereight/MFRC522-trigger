@@ -11,7 +11,7 @@
 # Prerequisites
 
 * python3
-* python modules RPi.GPIO, spidev, pi-rc522
+* python modules RPi.GPIO, spidev, pi-rc522, assertpy
 * enable the [SPI](https://en.wikipedia.org/wiki/Serial_Peripheral_Interface) on the Raspberry Pi
 
 # Manual Installation
@@ -23,6 +23,7 @@ $ sudo apt-get install python3 python3-pip vim
 $ sudo pip3 install RPi.GPIO
 $ sudo pip3 install spidev
 $ sudo pip3 install pi-rc522
+$ sudo pip3 install assertpy
 ```
 * edit Raspberry Pi's */boot/config.txt*: `$ sudo vi /boot/config.txt`
 * add the following lines somewhere in the file
@@ -132,59 +133,74 @@ my_raspi_host            : ok=13   changed=12   unreachable=0    failed=0
           "title": "Alias name for the tag with the given id."
         },
         "ondetect": {
-          "type": "object",
-          "title": "Default action to trigger when the tag with the given id is detected.",
-          "required": ["type"],
-          "properties": {
-            "type": {
-              "type": "string",
-              "title": "Type of action. One of [curl, command]."
-            },
-            "url": {
-              "type": "string",
-              "title": "Url to curl when the tag is detected."
-            },
-            "command": {
-              "type": "string",
-              "title": "Command to execute when the tag is detected."
+          "type": "array",
+          "items": {
+            "type": "object",
+            "title": "Default action to trigger when the tag with the given id is detected.",
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "title": "Type of action. One of [curl, command]."
+              },
+              "url": {
+                "type": "string",
+                "title": "Url to curl when the tag is detected."
+              },
+              "command": {
+                "type": "string",
+                "title": "Command to execute when the tag is detected."
+              }
             }
           }
         },
         "onremove": {
-          "type": "object",
-          "title": "Optional action to trigger when the tag with the given id is removed.",
-          "required": ["type"],
-          "properties": {
-            "type": {
-              "type": "string",
-              "title": "Type of action. One of [curl, command]."
-            },
-            "url": {
-              "type": "string",
-              "title": "Url to curl when the tag is detected."
-            },
-            "command": {
-              "type": "string",
-              "title": "Command to execute when the tag is detected."
+          "type": "array",
+          "items": {
+            "type": "object",
+            "title": "Optional action to trigger when the tag with the given id is removed.",
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "title": "Type of action. One of [curl, command]."
+              },
+              "url": {
+                "type": "string",
+                "title": "Url to curl when the tag is detected."
+              },
+              "command": {
+                "type": "string",
+                "title": "Command to execute when the tag is detected."
+              }
             }
-          }          
+          }
         },
         "onredetect": {
-          "type": "object",
-          "title": "Optional action to trigger when the tag with the given id is re-detected after it was removed",
-          "required": ["type"],
-          "properties": {
-            "type": {
-              "type": "string",
-              "title": "Type of action. One of [curl, command]."
-            },
-            "url": {
-              "type": "string",
-              "title": "Url to curl when the tag is detected."
-            },
-            "command": {
-              "type": "string",
-              "title": "Command to execute when the tag is detected."
+          "type": "array",
+          "items": {
+            "type": "object",
+            "title": "Optional action to trigger when the tag with the given id is re-detected after it was removed",
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "title": "Type of action. One of [curl, command]."
+              },
+              "url": {
+                "type": "string",
+                "title": "Url to curl when the tag is detected."
+              },
+              "command": {
+                "type": "string",
+                "title": "Command to execute when the tag is detected."
+              }
             }
           }
         }
@@ -200,32 +216,46 @@ my_raspi_host            : ok=13   changed=12   unreachable=0    failed=0
 {
   "1234567890123": {
     "name": "A very nice tag",
-    "ondetect": {
-      "type": "curl",
-      "url": "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=my_playlist_1"
-    }
+    "ondetect": [
+      {
+        "type": "curl",
+        "url": "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=my_playlist_1"
+      },
+      {
+        "type": "curl",
+        "url": "http://localhost:3000/api/v1/commands/?cmd=volume&volume=40"
+      }
+    ]
   },
   "9876543210987": {
     "name": "An even nicer tag",
-    "ondetect": {
-      "type": "curl",
-      "url": "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=my_playlist_2"
-    },
-    "onremove": {
-      "type": "curl",
-      "url": "http://localhost:3000/api/v1/commands/?cmd=pause"
-    },
-    "onredetect": {
-      "type": "curl",
-      "url": "http://localhost:3000/api/v1/commands/?cmd=play"
-    }
+    "ondetect": [
+      {
+        "type": "curl",
+        "url": "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=my_playlist_2"
+      }
+    ],
+    "onremove": [
+      {
+       "type": "curl",
+        "url": "http://localhost:3000/api/v1/commands/?cmd=pause"
+      }
+    ],
+    "onredetect": [
+      {
+        "type": "curl",
+        "url": "http://localhost:3000/api/v1/commands/?cmd=play"
+      }
+    ]
   },
   "5432109876543": {
     "name": "This tag is also nice",
-    "ondetect": {
-      "type": "command",
-      "command": "sudo shutdown -h now"
-    }
+    "ondetect": [
+      {
+        "type": "command",
+        "command": "sudo shutdown -h now"
+      }
+    ]
   }
 }
 ```
@@ -233,8 +263,7 @@ my_raspi_host            : ok=13   changed=12   unreachable=0    failed=0
 # Roadmap
 
 * quit with error when config is broken
-* python unit tests
-* travis ci
+* more python unit tests
 * Ansible playbook: set volumio logging level to error to reduce cpu load on Raspberry Pi Zero
 * document logging.ini
 * play beep sound when rfid tag is detected
@@ -242,6 +271,9 @@ my_raspi_host            : ok=13   changed=12   unreachable=0    failed=0
 
 # Roadmap done
 
+* multiple actions per event
+* python unit tests
+* githup actions ci
 * document Ansible playbook
 * command actions: execute a system command as action
 * migrate to python3
