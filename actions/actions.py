@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf8 -*-
 from enum import Enum, unique
+import logging
+
 
 @unique
 class NfcEvent(Enum):
@@ -9,9 +11,9 @@ class NfcEvent(Enum):
     REDETECT = 3
 
 
-def resolve_actions(config: dict, event: NfcEvent, tag_id: str):
+def resolve(config: dict, event: NfcEvent, tag_id: str):
     if tag_id not in config:
-        # logging.warning("No mapping for tag " + tag_id)
+        logging.warning("No mapping for tag " + tag_id)
         return []
 
     # logging.debug("Action " + event.name + " for tag " + tag_id)
@@ -26,15 +28,14 @@ def resolve_actions(config: dict, event: NfcEvent, tag_id: str):
     key = event_to_key_map[event]
 
     if key not in card:
-        # logging.debug("No event key '" + key + "' for tag " + tag_id)
+        logging.debug("No event key '" + key + "' for tag " + tag_id)
         return []
 
-    # logging.info("Executing '" + card['name'] + "'[" + key + "].")
+    logging.info("Executing '" + card['name'] + "'[" + key + "].")
 
     if type(card[key]) is dict:
         action = card[key]
 
-        # ACTION_MAP[action["type"]](action)
         return [action]
 
     return [ {"type": "curl", "url": card[key]} ]
