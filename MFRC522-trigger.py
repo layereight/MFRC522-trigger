@@ -11,17 +11,11 @@ import json
 import logging
 import logging.config
 import logging.handlers
-from enum import Enum, unique
+
+from actions import NfcEvent, resolve
 
 logging.config.fileConfig(os.path.dirname(__file__) + '/logging.ini')
 config = json.load(open(os.path.dirname(__file__) + '/config.json', encoding="utf-8"))
-
-
-@unique
-class NfcEvent(Enum):
-    DETECT = 1
-    REMOVE = 2
-    REDETECT = 3
 
 
 def execute_curl(url):
@@ -44,33 +38,11 @@ ACTION_MAP = {
 
 
 def execute_action(event: NfcEvent, tag_id: str):
-    if tag_id not in config:
-        logging.warning("No mapping for tag " + tag_id)
-        return
-    logging.debug("Action " + event.name + " for tag " + tag_id)
-    card = config[tag_id]
 
-    event_to_key_map = {
-        NfcEvent.DETECT: "ondetect" if "ondetect" in card else "url",
-        NfcEvent.REMOVE: "onremove",
-        NfcEvent.REDETECT: "onredetect" if "onredetect" in card else "ondetect" if "ondetect" in card else "url"
-    }
+    resolved_actions = resolve(config, event, tag_id)
 
-    key = event_to_key_map[event]
-
-    if key not in card:
-        logging.debug("No event key '" + key + "' for tag " + tag_id)
-        return
-
-    logging.info("Executing '" + card['name'] + "'[" + key + "].")
-
-    if type(card[key]) is dict:
-        action = card[key]
-
+    for action in resolved_actions:
         ACTION_MAP[action["type"]](action)
-        return
-
-    execute_curl(card[key])
 
 
 # welcome message

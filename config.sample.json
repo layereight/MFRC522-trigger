@@ -1,0 +1,81 @@
+{
+  "244168521198": {
+    "name": "Shutdown Tag",
+    "ondetect": [
+      {
+        "type": "command",
+        "command": "sudo shutdown -h now"
+      }
+    ]
+  },
+  "25324884211130": {
+    "name": "Pause/Play Tag",
+    "ondetect": [
+      {
+        "type": "curl",
+        "url": "http://localhost:3000/api/v1/commands/?cmd=toggle"
+      }
+    ]
+  },
+  "2081011237143": {
+    "name": "Checkcard",
+    "ondetect": [
+      {
+        "type": "curl",
+        "url": "http://localhost:3000/api/v1/commands/?cmd=stop"
+      }
+    ]
+  },
+  "13648823361": {
+    "name": "Löwe",
+    "ondetect": [
+      {
+        "type": "curl",
+        "url": "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=Maennlein"
+      },
+      {
+        "type": "curl",
+        "url": "http://localhost:3000/api/v1/commands/?cmd=volume&volume=40"
+      }
+    ]
+  },
+  "13647223446": {
+    "name": "Zebra",
+    "ondetect": [
+      {
+        "type": "curl",
+        "url": "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=Sommerhits"
+      }
+    ]
+  },
+  "1364215226185": {
+    "name": "Elefant",
+    "ondetect": [
+      {
+        "type": "curl",
+        "url": "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=Giraffenaffen4"
+      }
+    ]
+  },
+  "1364223226177": {
+    "name": "Giraffe",
+    "ondetect": [
+      {
+      "type": "curl",
+      "url": "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=Giraffenaffen"
+      }
+    ],
+    "onremove": [
+      {
+        "type": "curl",
+        "url": "http://localhost:3000/api/v1/commands/?cmd=pause"
+      }
+    ],
+    "onredetect": [
+      {
+        "type": "curl",
+        "url": "http://localhost:3000/api/v1/commands/?cmd=play"
+      }
+    ]
+  }
+}
