@@ -215,7 +215,7 @@ my_raspi_host            : ok=13   changed=12   unreachable=0    failed=0
 ```json
 {
   "1234567890123": {
-    "name": "A very nice tag",
+    "name": "A very nice tag, triggering 2 actions: playing a playlist and setting the volume.",
     "ondetect": [
       {
         "type": "curl",
