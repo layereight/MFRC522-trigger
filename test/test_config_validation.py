@@ -6,7 +6,7 @@ from assertpy import assert_that
 from config import validate_config
 
 
-class ResolveActionsTestCase(unittest.TestCase):
+class ValidateConfigTestCase(unittest.TestCase):
 
     def setUp(self):
         self.config = {
