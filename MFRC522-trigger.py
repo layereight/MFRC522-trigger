@@ -3,7 +3,7 @@
 
 import pirc522
 import sys
-import os
+from os import path
 import urllib.request
 import subprocess
 import time
@@ -13,9 +13,11 @@ import logging.config
 import logging.handlers
 
 from actions import NfcEvent, resolve
+from config import validate_config
 
-logging.config.fileConfig(os.path.dirname(__file__) + '/logging.ini')
-config = json.load(open(os.path.dirname(__file__) + '/config.json', encoding="utf-8"))
+pathname = path.dirname(path.abspath(__file__))
+logging.config.fileConfig(pathname + '/logging.ini')
+config = json.load(open(pathname + '/config.json', encoding="utf-8"))
 
 
 def execute_curl(url):
@@ -47,6 +49,7 @@ def execute_action(event: NfcEvent, tag_id: str):
 
 # welcome message
 logging.info("Welcome to MFRC522-trigger!")
+validate_config(config)
 logging.info("Press Ctrl-C to stop.")
 
 # create a reader

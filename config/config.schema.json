@@ -1,0 +1,90 @@
+{
+  "type": "object",
+  "title": "The root schema",
+  "additionalProperties": false,
+  "patternProperties": {
+    "^[0-9]+$": {
+      "type": "object",
+      "title": "Schema holding name and actions for a tag",
+      "required": ["name", "ondetect"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Alias name for the tag with the given id."
+        },
+        "ondetect": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "title": "Default action to trigger when the tag with the given id is detected.",
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "title": "Type of action. One of [curl, command]."
+              },
+              "url": {
+                "type": "string",
+                "title": "Url to curl when the tag is detected."
+              },
+              "command": {
+                "type": "string",
+                "title": "Command to execute when the tag is detected."
+              }
+            }
+          }
+        },
+        "onremove": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "title": "Optional action to trigger when the tag with the given id is removed.",
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "title": "Type of action. One of [curl, command]."
+              },
+              "url": {
+                "type": "string",
+                "title": "Url to curl when the tag is detected."
+              },
+              "command": {
+                "type": "string",
+                "title": "Command to execute when the tag is detected."
+              }
+            }
+          }
+        },
+        "onredetect": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "title": "Optional action to trigger when the tag with the given id is re-detected after it was removed",
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "title": "Type of action. One of [curl, command]."
+              },
+              "url": {
+                "type": "string",
+                "title": "Url to curl when the tag is detected."
+              },
+              "command": {
+                "type": "string",
+                "title": "Command to execute when the tag is detected."
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

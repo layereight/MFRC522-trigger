@@ -118,10 +118,13 @@ my_raspi_host            : ok=13   changed=12   unreachable=0    failed=0
 
 ## JSON schema
 
+<!-- embedme config/config.schema.json -->
+
 ```json
 {
   "type": "object",
   "title": "The root schema",
+  "additionalProperties": false,
   "patternProperties": {
     "^[0-9]+$": {
       "type": "object",
@@ -212,6 +215,8 @@ my_raspi_host            : ok=13   changed=12   unreachable=0    failed=0
 
 ## Example configuration
 
+<!-- embedme config.sample.json -->
+
 ```json
 {
   "1234567890123": {
@@ -237,7 +242,7 @@ my_raspi_host            : ok=13   changed=12   unreachable=0    failed=0
     ],
     "onremove": [
       {
-       "type": "curl",
+        "type": "curl",
         "url": "http://localhost:3000/api/v1/commands/?cmd=pause"
       }
     ],

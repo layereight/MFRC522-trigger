@@ -1,37 +1,10 @@
 {
-  "244168521198": {
-    "name": "Shutdown Tag",
-    "ondetect": [
-      {
-        "type": "command",
-        "command": "sudo shutdown -h now"
-      }
-    ]
-  },
-  "25324884211130": {
-    "name": "Pause/Play Tag",
+  "1234567890123": {
+    "name": "A very nice tag, triggering 2 actions: playing a playlist and setting the volume.",
     "ondetect": [
       {
         "type": "curl",
-        "url": "http://localhost:3000/api/v1/commands/?cmd=toggle"
-      }
-    ]
-  },
-  "2081011237143": {
-    "name": "Checkcard",
-    "ondetect": [
-      {
-        "type": "curl",
-        "url": "http://localhost:3000/api/v1/commands/?cmd=stop"
-      }
-    ]
-  },
-  "13648823361": {
-    "name": "Löwe",
-    "ondetect": [
-      {
-        "type": "curl",
-        "url": "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=Maennlein"
+        "url": "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=my_playlist_1"
       },
       {
         "type": "curl",
@@ -39,30 +12,12 @@
       }
     ]
   },
-  "13647223446": {
-    "name": "Zebra",
+  "9876543210987": {
+    "name": "An even nicer tag",
     "ondetect": [
       {
         "type": "curl",
-        "url": "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=Sommerhits"
-      }
-    ]
-  },
-  "1364215226185": {
-    "name": "Elefant",
-    "ondetect": [
-      {
-        "type": "curl",
-        "url": "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=Giraffenaffen4"
-      }
-    ]
-  },
-  "1364223226177": {
-    "name": "Giraffe",
-    "ondetect": [
-      {
-      "type": "curl",
-      "url": "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=Giraffenaffen"
+        "url": "http://localhost:3000/api/v1/commands/?cmd=playplaylist&name=my_playlist_2"
       }
     ],
     "onremove": [
@@ -75,6 +30,15 @@
       {
         "type": "curl",
         "url": "http://localhost:3000/api/v1/commands/?cmd=play"
+      }
+    ]
+  },
+  "5432109876543": {
+    "name": "This tag is also nice",
+    "ondetect": [
+      {
+        "type": "command",
+        "command": "sudo shutdown -h now"
       }
     ]
   }
