@@ -19,6 +19,39 @@ class ValidateConfigTestCase(unittest.TestCase):
                         "type": "curl",
                         "url": "http://localhost:3000/?cmd=playplaylist&name=single_event",
                     }
+                ],
+                "onremove": [
+                    {
+                        "type": "command",
+                        "command": "anycommnad",
+                    }
+                ],
+                "onredetect": [
+                    {
+                        "type": "curl",
+                        "url": "https://hello.com",
+                    }
+                ]
+            },
+            "11": {
+                "name": "another valid config",
+                "ondetect": [
+                    {
+                        "type": "command",
+                        "command": "shutdown -h now",
+                    }
+                ],
+                "onremove": [
+                    {
+                        "type": "curl",
+                        "url": "http://bla.com",
+                    }
+                ],
+                "onredetect": [
+                    {
+                        "type": "command",
+                        "command": "doit.sh",
+                    }
                 ]
             }
         }
