@@ -1,5 +1,6 @@
 RPi.GPIO
 spidev
 pi-rc522
+# works with python 3.4
 fastjsonschema==2.14.1
 assertpy
