@@ -23,6 +23,7 @@ $ sudo apt-get install python3 python3-pip vim
 $ sudo pip3 install RPi.GPIO
 $ sudo pip3 install spidev
 $ sudo pip3 install pi-rc522
+$ sudo pip3 install fastjsonschema==2.14.1
 $ sudo pip3 install assertpy
 ```
 * edit Raspberry Pi's */boot/config.txt*: `$ sudo vi /boot/config.txt`
@@ -255,6 +256,7 @@ my_raspi_host            : ok=13   changed=12   unreachable=0    failed=0
 
 # Roadmap done
 
+* validate config with JSON schema and log a warning when it's invalid
 * multiple actions per event
 * python unit tests
 * githup actions ci
