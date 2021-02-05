@@ -130,6 +130,7 @@ my_raspi_host            : ok=13   changed=12   unreachable=0    failed=0
       "type": "object",
       "title": "Schema holding name and actions for a tag",
       "required": ["name", "ondetect"],
+      "additionalProperties": false,
       "properties": {
         "name": {
           "type": "string",
@@ -137,80 +138,138 @@ my_raspi_host            : ok=13   changed=12   unreachable=0    failed=0
         },
         "ondetect": {
           "type": "array",
+          "title": "Default actions to trigger when the tag with the given id is detected.",
           "items": {
-            "type": "object",
-            "title": "Default action to trigger when the tag with the given id is detected.",
-            "required": [
-              "type"
-            ],
-            "properties": {
-              "type": {
-                "type": "string",
-                "title": "Type of action. One of [curl, command]."
+            "oneOf": [
+              {
+                "type": "object",
+                "title": "Curl action",
+                "required": ["type", "url"],
+                "additionalProperties": false,
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "title": "Type of action. Must be 'curl'.",
+                    "pattern": "^curl$"
+                  },
+                  "url": {
+                    "type": "string",
+                    "title": "Url to curl when the tag is detected.",
+                    "format": "uri"
+                  }
+                }
               },
-              "url": {
-                "type": "string",
-                "title": "Url to curl when the tag is detected."
-              },
-              "command": {
-                "type": "string",
-                "title": "Command to execute when the tag is detected."
+              {
+                "type": "object",
+                "title": "Command line action",
+                "required": ["type", "command"],
+                "additionalProperties": false,
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "title": "Type of action. Must be 'command'.",
+                    "pattern": "^command$"
+                  },
+                  "command": {
+                    "type": "string",
+                    "title": "Command to execute when the tag is detected."
+                  }
+                }
               }
-            }
+            ]
           }
         },
         "onremove": {
           "type": "array",
+          "title": "Optional action to trigger when the tag with the given id is removed.",
           "items": {
-            "type": "object",
-            "title": "Optional action to trigger when the tag with the given id is removed.",
-            "required": [
-              "type"
-            ],
-            "properties": {
-              "type": {
-                "type": "string",
-                "title": "Type of action. One of [curl, command]."
+            "oneOf": [
+              {
+                "type": "object",
+                "title": "Curl action",
+                "required": ["type", "url"],
+                "additionalProperties": false,
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "title": "Type of action. Must be 'curl'.",
+                    "pattern": "^curl$"
+                  },
+                  "url": {
+                    "type": "string",
+                    "title": "Url to curl when the tag is detected.",
+                    "format": "uri"
+                  }
+                }
               },
-              "url": {
-                "type": "string",
-                "title": "Url to curl when the tag is detected."
-              },
-              "command": {
-                "type": "string",
-                "title": "Command to execute when the tag is detected."
+              {
+                "type": "object",
+                "title": "Command line action",
+                "required": ["type", "command"],
+                "additionalProperties": false,
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "title": "Type of action. Must be 'command'.",
+                    "pattern": "^command$"
+                  },
+                  "command": {
+                    "type": "string",
+                    "title": "Command to execute when the tag is detected."
+                  }
+                }
               }
-            }
+            ]
           }
         },
         "onredetect": {
           "type": "array",
+          "title": "Optional action to trigger when the tag with the given id is re-detected after it was removed",
           "items": {
-            "type": "object",
-            "title": "Optional action to trigger when the tag with the given id is re-detected after it was removed",
-            "required": [
-              "type"
-            ],
-            "properties": {
-              "type": {
-                "type": "string",
-                "title": "Type of action. One of [curl, command]."
+            "oneOf": [
+              {
+                "type": "object",
+                "title": "Curl action",
+                "required": ["type", "url"],
+                "additionalProperties": false,
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "title": "Type of action. Must be 'curl'.",
+                    "pattern": "^curl$"
+                  },
+                  "url": {
+                    "type": "string",
+                    "title": "Url to curl when the tag is detected.",
+                    "format": "uri"
+                  }
+                }
               },
-              "url": {
-                "type": "string",
-                "title": "Url to curl when the tag is detected."
-              },
-              "command": {
-                "type": "string",
-                "title": "Command to execute when the tag is detected."
+              {
+                "type": "object",
+                "title": "Command line action",
+                "required": ["type", "command"],
+                "additionalProperties": false,
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "title": "Type of action. Must be 'command'.",
+                    "pattern": "^command$"
+                  },
+                  "command": {
+                    "type": "string",
+                    "title": "Command to execute when the tag is detected."
+                  }
+                }
               }
-            }
+            ]
           }
         }
       }
     }
   }
 }
+
 ```
 
 ## Example configuration
