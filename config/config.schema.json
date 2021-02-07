@@ -1,0 +1,68 @@
+{
+  "definitions": {
+    "actions": {
+      "type": "array",
+      "title": "Actions to trigger when the tag with the given id is detected for the given event.",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "title": "Curl action",
+            "required": ["type", "url"],
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "type": "string",
+                "title": "Type of action. Must be 'curl'.",
+                "pattern": "^curl$"
+              },
+              "url": {
+                "type": "string",
+                "title": "Url to curl when the tag is detected.",
+                "format": "uri"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "title": "Command line action",
+            "required": ["type", "command"],
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "type": "string",
+                "title": "Type of action. Must be 'command'.",
+                "pattern": "^command$"
+              },
+              "command": {
+                "type": "string",
+                "title": "Command to execute when the tag is detected."
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+
+  "type": "object",
+  "title": "The root schema",
+  "additionalProperties": false,
+  "patternProperties": {
+    "^[0-9]+$": {
+      "type": "object",
+      "title": "Schema holding name and actions for a tag",
+      "required": ["name", "ondetect"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Alias name for the tag with the given id."
+        },
+        "ondetect": { "$ref": "#/definitions/actions" },
+        "onremove": { "$ref": "#/definitions/actions" },
+        "onredetect": { "$ref": "#/definitions/actions" }
+      }
+    }
+  }
+}

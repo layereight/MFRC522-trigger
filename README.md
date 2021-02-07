@@ -23,6 +23,7 @@ $ sudo apt-get install python3 python3-pip vim
 $ sudo pip3 install RPi.GPIO
 $ sudo pip3 install spidev
 $ sudo pip3 install pi-rc522
+$ sudo pip3 install fastjsonschema==2.14.1
 $ sudo pip3 install assertpy
 ```
 * edit Raspberry Pi's */boot/config.txt*: `$ sudo vi /boot/config.txt`
@@ -118,99 +119,83 @@ my_raspi_host            : ok=13   changed=12   unreachable=0    failed=0
 
 ## JSON schema
 
+<!-- embedme config/config.schema.json -->
+
 ```json
 {
+  "definitions": {
+    "actions": {
+      "type": "array",
+      "title": "Actions to trigger when the tag with the given id is detected for the given event.",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "title": "Curl action",
+            "required": ["type", "url"],
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "type": "string",
+                "title": "Type of action. Must be 'curl'.",
+                "pattern": "^curl$"
+              },
+              "url": {
+                "type": "string",
+                "title": "Url to curl when the tag is detected.",
+                "format": "uri"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "title": "Command line action",
+            "required": ["type", "command"],
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "type": "string",
+                "title": "Type of action. Must be 'command'.",
+                "pattern": "^command$"
+              },
+              "command": {
+                "type": "string",
+                "title": "Command to execute when the tag is detected."
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+
   "type": "object",
   "title": "The root schema",
+  "additionalProperties": false,
   "patternProperties": {
     "^[0-9]+$": {
       "type": "object",
       "title": "Schema holding name and actions for a tag",
       "required": ["name", "ondetect"],
+      "additionalProperties": false,
       "properties": {
         "name": {
           "type": "string",
           "title": "Alias name for the tag with the given id."
         },
-        "ondetect": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "title": "Default action to trigger when the tag with the given id is detected.",
-            "required": [
-              "type"
-            ],
-            "properties": {
-              "type": {
-                "type": "string",
-                "title": "Type of action. One of [curl, command]."
-              },
-              "url": {
-                "type": "string",
-                "title": "Url to curl when the tag is detected."
-              },
-              "command": {
-                "type": "string",
-                "title": "Command to execute when the tag is detected."
-              }
-            }
-          }
-        },
-        "onremove": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "title": "Optional action to trigger when the tag with the given id is removed.",
-            "required": [
-              "type"
-            ],
-            "properties": {
-              "type": {
-                "type": "string",
-                "title": "Type of action. One of [curl, command]."
-              },
-              "url": {
-                "type": "string",
-                "title": "Url to curl when the tag is detected."
-              },
-              "command": {
-                "type": "string",
-                "title": "Command to execute when the tag is detected."
-              }
-            }
-          }
-        },
-        "onredetect": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "title": "Optional action to trigger when the tag with the given id is re-detected after it was removed",
-            "required": [
-              "type"
-            ],
-            "properties": {
-              "type": {
-                "type": "string",
-                "title": "Type of action. One of [curl, command]."
-              },
-              "url": {
-                "type": "string",
-                "title": "Url to curl when the tag is detected."
-              },
-              "command": {
-                "type": "string",
-                "title": "Command to execute when the tag is detected."
-              }
-            }
-          }
-        }
+        "ondetect": { "$ref": "#/definitions/actions" },
+        "onremove": { "$ref": "#/definitions/actions" },
+        "onredetect": { "$ref": "#/definitions/actions" }
       }
     }
   }
 }
+
 ```
 
 ## Example configuration
+
+<!-- embedme config.sample.json -->
 
 ```json
 {
@@ -237,7 +222,7 @@ my_raspi_host            : ok=13   changed=12   unreachable=0    failed=0
     ],
     "onremove": [
       {
-       "type": "curl",
+        "type": "curl",
         "url": "http://localhost:3000/api/v1/commands/?cmd=pause"
       }
     ],
@@ -271,6 +256,7 @@ my_raspi_host            : ok=13   changed=12   unreachable=0    failed=0
 
 # Roadmap done
 
+* validate config with JSON schema and log a warning when it's invalid
 * multiple actions per event
 * python unit tests
 * githup actions ci
