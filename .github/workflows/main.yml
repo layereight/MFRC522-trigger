@@ -1,0 +1,25 @@
+---
+
+#name: Test MFRC522-trigger
+
+on: [push]
+
+jobs:
+
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install required modules
+        run: pip install -r requirements.txt
+
+      - name: Execute tests
+        run: test.sh
