@@ -1,3 +1,5 @@
+![test](https://github.com/layereight/MFRC522-trigger/workflows/test/badge.svg)
+
 # MFRC522-trigger
 
 * trigger arbitrary action when the MFRC522 detects an NFC tag
