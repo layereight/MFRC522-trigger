@@ -1,6 +1,6 @@
 ---
 
-#name: Test MFRC522-trigger
+name: test
 
 on: [push]
 
