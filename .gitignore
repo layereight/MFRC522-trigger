@@ -1,4 +1,6 @@
 *bak
 *.log
+*.log.*
 config.json
 *.pyc
+*.iml
