@@ -1,4 +1,6 @@
-![test](https://github.com/layereight/MFRC522-trigger/workflows/test/badge.svg)
+<a href="https://github.com/layereight/MFRC522-trigger/actions">
+  <img alt="GitHub Actions status" src="https://github.com/layereight/MFRC522-trigger/workflows/test/badge.svg" />
+</a>
 
 # MFRC522-trigger
 
