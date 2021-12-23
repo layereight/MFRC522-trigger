@@ -73,7 +73,7 @@
       reboot:
       when: boot_userconfig.changed == true
 
-- name: Clone MFRC522-trigger from github
+- name: Init MFRC522-trigger in devel directory
   hosts: my_pi
   gather_facts: false
   tags: [ clone ]
@@ -83,18 +83,6 @@
     target_dir: "devel/MFRC522-trigger"
 
   tasks:
-
-    - name: Create devel directory
-      file:
-        path: devel
-        state: directory
-
-    - name: Clone MFRC522-trigger from github
-      git:
-        repo: "https://github.com/layereight/MFRC522-trigger.git"
-        dest: "{{ target_dir }}"
-        force: yes
-
     - name: Copy config.json from sample file
       copy:
         src: "{{ target_dir }}/config.json.sample"
