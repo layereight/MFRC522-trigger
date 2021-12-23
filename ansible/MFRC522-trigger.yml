@@ -62,6 +62,7 @@
       blockinfile:
         path: /boot/userconfig.txt
         insertbefore: "# Add your custom config.txt options to this file, which will be preserved during updates"
+        marker: "# {mark} ansible manged for MFRC522-trigger"
         content: |
           dtparam=spi=on
           dtoverlay=pi3-disable-bt
