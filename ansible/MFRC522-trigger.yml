@@ -85,7 +85,7 @@
   tasks:
     - name: Copy config.json from sample file
       copy:
-        src: "{{ target_dir }}/config.json.sample"
+        src: "{{ target_dir }}/config.sample.json"
         remote_src: yes
         dest: "{{ target_dir }}/config.json"
         force: no
