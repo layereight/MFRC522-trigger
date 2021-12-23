@@ -50,28 +50,28 @@
         name: pi-rc522
         executable: pip3
 
-- name: Prepare Raspberry Pi's /boot/config.txt
+- name: Prepare Raspberry Pi's /boot/userconfig.txt
   hosts: my_pi
   gather_facts: false
-  tags: [ boot_config ]
+  tags: [ boot_userconfig ]
 
   tasks:
 
-    - name: Alter /boot/config.txt
+    - name: Alter /boot/userconfig.txt
       become: yes
       blockinfile:
-        path: /boot/config.txt
-        insertbefore: "#### Volumio i2s setting below: do not alter ####"
+        path: /boot/userconfig.txt
+        insertbefore: "# Add your custom config.txt options to this file, which will be preserved during updates"
         content: |
           dtparam=spi=on
           dtoverlay=pi3-disable-bt
           enable_uart=1
-      register: boot_config
+      register: boot_userconfig
 
-    - name: Reboot the machine when /boot/config.txt was changed
+    - name: Reboot the machine when /boot/userconfig.txt was changed
       become: yes
       reboot:
-      when: boot_config.changed == true
+      when: boot_userconfig.changed == true
 
 - name: Clone MFRC522-trigger from github
   hosts: my_pi
