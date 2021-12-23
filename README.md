@@ -86,13 +86,7 @@ changed: [my_raspi_host]
 TASK [Reboot the machine when /boot/config.txt was changed] *************************
 changed: [my_raspi_host]
 
-PLAY [Clone MFRC522-trigger from github] ********************************************
-
-TASK [Create devel directory] *******************************************************
-changed: [my_raspi_host]
-
-TASK [Clone MFRC522-trigger from github] ********************************************
-changed: [my_raspi_host]
+PLAY [Init MFRC522-trigger in devel directory] **************************************
 
 TASK [Copy config.json from sample file] ********************************************
 changed: [my_raspi_host]
