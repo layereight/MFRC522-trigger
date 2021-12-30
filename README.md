@@ -46,6 +46,7 @@ enable_uart=1
 * Ansible is an automation tool, if you wanna know more about it have a look at 
   https://docs.ansible.com/ansible/latest/index.html
 * install Ansible on your local machine https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html
+* The automated install assumes that you have a /boot/userconfig.txt that is included from /boot/config. This is the default-setup for volumio3 distributions. Otherwise add include userconfig.txt to the end of /boot/config.txt or modify ansible/MFRC522-trigger.yml to modify /etc/config instead od /etc/userconfig.txt
 * on your local machine clone the repo https://github.com/layereight/MFRC522-trigger to a direcory named 'devel' (or adjust folder in MFRC522-trigger.yml)
 ```
 $ mkdir devel
