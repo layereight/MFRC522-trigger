@@ -62,16 +62,13 @@ $ ansible-playbook -i inventory MFRC522-trigger.yml
 
 PLAY [Install prerequisite software] ************************************************
 
-TASK [Run apt-get update if cache is older than a week] *****************************
-ok: [my_raspi_host]
-
 TASK [Install prerequisite debian packages] *****************************************
 changed: [my_raspi_host]
 
-TASK [Install prerequisite pip packages] ********************************************
+TASK [Install pip requirements file] ************************************************
 changed: [my_raspi_host]
 
-TASK [Install pi-rc522 python library] **********************************************
+TASK [Install prerequisite pip packages] ********************************************
 changed: [my_raspi_host]
 
 PLAY [Prepare Raspberry Pi's /boot/config.txt] **************************************
@@ -114,7 +111,7 @@ TASK [systemd : Enable custom systemd service] *********************************
 skipping: [my_raspi_host]
 
 PLAY RECAP **************************************************************************
-my_raspi_host            : ok=13   changed=12   unreachable=0    failed=0
+my_raspi_host : ok=11 changed=11 unreachable=0 failed=0 skipped=2 rescued=0 ignored=0
 
 ```
 
