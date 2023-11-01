@@ -24,7 +24,8 @@
 ```
 $ sudo apt-get update
 $ sudo apt-get install python3 python3-pip vim
-$ sudo pip3 install -r requirements.txt
+$ git clone https://github.com/layereight/MFRC522-trigger.git
+$ sudo pip3 install -r MFRC522-trigger/requirements.txt
 ```
 * edit Raspberry Pi's */boot/config.txt*: `$ sudo vi /boot/config.txt`
 * add the following lines somewhere in the file
@@ -34,6 +35,8 @@ dtoverlay=pi3-disable-bt
 enable_uart=1
 ```
 * reboot: `sudo reboot`
+* configure MFRC522-trigger config file `MFRC522-trigger/config.json`
+* run `MFRC522-trigger/MFRC522-trigger.py`
 
 # Automated Installation
 
