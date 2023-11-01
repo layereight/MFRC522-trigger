@@ -19,35 +19,23 @@
       - python3-pip
       - vim
 
-    python_packages:
-      - RPi.GPIO
-      - spidev
-      - fastjsonschema==2.14.1
-      - assertpy
-
   tasks:
-
-    - name: "Run apt-get update if cache is older than a week"
-      become: yes
-      apt:
-        update_cache: yes
-        cache_valid_time: 604800 # 1 week = 7 * 24 * 3600 seconds
 
     - name: "Install prerequisite debian packages"
       become: yes
       apt:
         name: "{{ debian_packages }}"
+        update_cache: yes
+        cache_valid_time: 604800 # 1 week = 7 * 24 * 3600 seconds
+
+    - name: "Install pip requirements file"
+      copy:
+        src: ../requirements.txt
+        dest: /tmp/requirements_MFRC522-trigger.txt
 
     - name: "Install prerequisite pip packages"
-      become: yes
       pip:
-        name: "{{ python_packages }}"
-        executable: pip3
-
-    - name: "Install pi-rc522 python library"
-      become: yes
-      pip:
-        name: pi-rc522
+        requirements: /tmp/requirements_MFRC522-trigger.txt
         executable: pip3
 
 - name: Prepare Raspberry Pi's /boot/config.txt
