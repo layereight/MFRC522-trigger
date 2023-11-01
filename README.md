@@ -24,11 +24,7 @@
 ```
 $ sudo apt-get update
 $ sudo apt-get install python3 python3-pip vim
-$ sudo pip3 install RPi.GPIO
-$ sudo pip3 install spidev
-$ sudo pip3 install pi-rc522
-$ sudo pip3 install fastjsonschema==2.14.1
-$ sudo pip3 install assertpy
+$ sudo pip3 install -r requirements.txt
 ```
 * edit Raspberry Pi's */boot/config.txt*: `$ sudo vi /boot/config.txt`
 * add the following lines somewhere in the file
