@@ -49,7 +49,10 @@ def execute_action(event: NfcEvent, tag_id: str):
 
 # welcome message
 logging.info("Welcome to MFRC522-trigger!")
-validate_config(config)
+
+if not validate_config(config):
+    sys.exit(1)
+
 logging.info("Press Ctrl-C to stop.")
 
 # create a reader

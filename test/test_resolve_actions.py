@@ -12,10 +12,12 @@ class ResolveActionsTestCase(unittest.TestCase):
         self.config = {
             "111": {
                 "name": "single_event",
-                "ondetect": {
-                    "type": "curl",
-                    "url": "http://localhost:3000/?cmd=playplaylist&name=single_event"
-                }
+                "ondetect": [
+                    {
+                        "type": "curl",
+                        "url": "http://localhost:3000/?cmd=playplaylist&name=single_event"
+                    }
+                ]
             },
             "222": {
                 "name": "detect_remove",
@@ -34,22 +36,24 @@ class ResolveActionsTestCase(unittest.TestCase):
             },
             "333": {
                 "name": "all_events",
-                "ondetect": {
-                    "type": "curl",
-                    "url": "http://localhost:3000/?cmd=playplaylist&name=all_events"
-                },
-                "onremove": {
-                    "type": "curl",
-                    "url": "http://localhost:3000/?cmd=pause&name=all_events"
-                },
-                "onredetect": {
-                    "type": "curl",
-                    "url": "http://localhost:3000/?cmd=play&name=all_events"
-                }
-            },
-            "444": {
-                "name": "legacy_config",
-                "url": "http://localhost:3000/?cmd=playplaylist&name=legacy_config"
+                "ondetect": [
+                    {
+                        "type": "curl",
+                        "url": "http://localhost:3000/?cmd=playplaylist&name=all_events"
+                    }
+                ],
+                "onremove": [
+                    {
+                        "type": "curl",
+                        "url": "http://localhost:3000/?cmd=pause&name=all_events"
+                    }
+                ],
+                "onredetect": [
+                    {
+                        "type": "curl",
+                        "url": "http://localhost:3000/?cmd=play&name=all_events"
+                    }
+                ]
             }
         }
 
@@ -170,41 +174,6 @@ class ResolveActionsTestCase(unittest.TestCase):
         # then
         assert_that(result).is_length(1)
         assert_that(result).contains_only({"type": "curl", "url": "http://localhost:3000/?cmd=pause&name=all_events"})
-
-    def test_resolve_action_for_legacy_config_on_detect(self):
-        # given
-        event = actions.NfcEvent.DETECT
-        tag_id = "444"
-
-        # when
-        result = actions.resolve(self.config, event, tag_id)
-
-        # then
-        assert_that(result).is_length(1)
-        assert_that(result).contains_only({"type": "curl", "url": "http://localhost:3000/?cmd=playplaylist&name=legacy_config"})
-
-    def test_resolve_action_for_legacy_config_on_redetect(self):
-        # given
-        event = actions.NfcEvent.REDETECT
-        tag_id = "444"
-
-        # when
-        result = actions.resolve(self.config, event, tag_id)
-
-        # then
-        assert_that(result).is_length(1)
-        assert_that(result).contains_only({"type": "curl", "url": "http://localhost:3000/?cmd=playplaylist&name=legacy_config"})
-
-    def test_resolve_action_for_legacy_config_on_remove(self):
-        # given
-        event = actions.NfcEvent.REMOVE
-        tag_id = "444"
-
-        # when
-        result = actions.resolve(self.config, event, tag_id)
-
-        # then
-        assert_that(result).is_empty()
 
 
 if "__main__" == __name__:
