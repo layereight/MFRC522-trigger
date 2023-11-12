@@ -247,7 +247,6 @@ my_raspi_host : ok=11 changed=11 unreachable=0 failed=0 skipped=2 rescued=0 igno
 
 # Roadmap
 
-* quit with error when config is broken
 * more python unit tests
 * Ansible playbook: set volumio logging level to error to reduce cpu load on Raspberry Pi Zero
 * document logging.ini
@@ -256,6 +255,7 @@ my_raspi_host : ok=11 changed=11 unreachable=0 failed=0 skipped=2 rescued=0 igno
 
 # Roadmap done
 
+* quit with error when config is broken
 * validate config with JSON schema and log a warning when it's invalid
 * multiple actions per event
 * python unit tests
