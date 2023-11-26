@@ -1,6 +1,6 @@
 {
-  "1234567890123": {
-    "name": "A very nice tag, triggering 2 actions: playing a playlist and setting the volume.",
+  "01:23:AB:CD": {
+    "name": "A very nice 4-byte NUID tag, triggering 2 actions: playing a playlist and setting the volume.",
     "ondetect": [
       {
         "type": "curl",
@@ -12,8 +12,8 @@
       }
     ]
   },
-  "9876543210987": {
-    "name": "An even nicer tag",
+  "01:23:45:67:89:0A:BC": {
+    "name": "An even nicer 7-byte UID tag",
     "ondetect": [
       {
         "type": "curl",
@@ -33,7 +33,7 @@
       }
     ]
   },
-  "5432109876543": {
+  "AA:BB:CC:DD:EE:FF:01": {
     "name": "This tag is also nice",
     "ondetect": [
       {

@@ -173,7 +173,7 @@ my_raspi_host : ok=11 changed=11 unreachable=0 failed=0 skipped=2 rescued=0 igno
   "title": "The root schema",
   "additionalProperties": false,
   "patternProperties": {
-    "^[0-9]+$": {
+    "^[0-9A-F:]+$": {
       "type": "object",
       "title": "Schema holding name and actions for a tag",
       "required": ["name", "ondetect"],
@@ -199,8 +199,8 @@ my_raspi_host : ok=11 changed=11 unreachable=0 failed=0 skipped=2 rescued=0 igno
 
 ```json
 {
-  "1234567890123": {
-    "name": "A very nice tag, triggering 2 actions: playing a playlist and setting the volume.",
+  "01:23:AB:CD": {
+    "name": "A very nice 4-byte NUID tag, triggering 2 actions: playing a playlist and setting the volume.",
     "ondetect": [
       {
         "type": "curl",
@@ -212,8 +212,8 @@ my_raspi_host : ok=11 changed=11 unreachable=0 failed=0 skipped=2 rescued=0 igno
       }
     ]
   },
-  "9876543210987": {
-    "name": "An even nicer tag",
+  "01:23:45:67:89:0A:BC": {
+    "name": "An even nicer 7-byte UID tag",
     "ondetect": [
       {
         "type": "curl",
@@ -233,7 +233,7 @@ my_raspi_host : ok=11 changed=11 unreachable=0 failed=0 skipped=2 rescued=0 igno
       }
     ]
   },
-  "5432109876543": {
+  "AA:BB:CC:DD:EE:FF:01": {
     "name": "This tag is also nice",
     "ondetect": [
       {
@@ -243,7 +243,33 @@ my_raspi_host : ok=11 changed=11 unreachable=0 failed=0 skipped=2 rescued=0 igno
     ]
   }
 }
+
 ```
+
+# Version 2 Breaking Changes
+
+Version 2.x of this software respects single (4 bytes) and double (7 bytes) sized UIDs as defined by ISO standard 14443-3.
+Version 1.x was always assuming single sized UIDs and simply concatenated decimal string representations of each byte 
+(e.g. `1364182229223`). Version 2.x assumes hexadecimal representation of each byte separated by a colon
+(e.g. 4-byte `01:23:AB:CD`, e.g. 7-byte `01:23:45:67:89:0A:BC`).
+
+This incompatability makes config files from version 1.x unusable with version 2.x. For easier config migration a tool
+called `id-convert.py` is provided.
+
+## Config Tag ID Migration Steps
+
+* start `id-convert.py` and rescan all your tags, a file `ids.csv` is written containing a list of old style and new style tag ids
+  ```
+  $ ./id-convert.py | tee ids.csv
+  ```
+* backup your current config
+  ```
+  $ cp config.json config.json.bak
+  ```
+* replace old tag ids with new tag ids in your config file `config.json`
+  ```
+  $ for i in $(cat ids.csv); old=$(echo $i | cut -d '_' -f 1) && new=$(echo $i | cut -d '_' -f 2) && echo "${old} ${new}" && sed -i "s/${old}/${new}/g" config.json; done
+  ```
 
 # Roadmap
 
@@ -255,6 +281,7 @@ my_raspi_host : ok=11 changed=11 unreachable=0 failed=0 skipped=2 rescued=0 igno
 
 # Roadmap done
 
+* ISO 14443 Tag IDs
 * quit with error when config is broken
 * validate config with JSON schema and log a warning when it's invalid
 * multiple actions per event
