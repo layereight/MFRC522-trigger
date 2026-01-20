@@ -76,7 +76,9 @@ while True:
     try:
         # wait for reader to send an interrupt
         if not polling:
-            reader.wait_for_tag()
+            # reader.wait_for_tag()
+            logging.debug("Sleep!")
+            time.sleep(0.5)
 
         count += 1
         logging.debug("Reader loop %d", count)
