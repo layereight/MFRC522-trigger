@@ -16,7 +16,7 @@
 
 * python3
 * python modules RPi.GPIO, spidev, pi-rc522, assertpy
-* enable the [SPI](https://en.wikipedia.org/wiki/Serial_Peripheral_Interface) on the Raspberry Pi
+* enable the [SPI](https://en.wikipedia.org/wiki/Serial_Peripheral_Interface) on the Raspberry Pi using `raspi-config`
 
 # Manual Installation
 
