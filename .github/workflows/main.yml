@@ -23,7 +23,7 @@ jobs:
         run: sudo apt -y install liblgpio-dev
 
       - name: Install required packages
-        run: pip install -r requirements.txt
+        run: pip install --no-deps -r requirements.txt
 
       - name: Execute tests
         run: ./test.sh
