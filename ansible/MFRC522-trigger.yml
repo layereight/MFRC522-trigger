@@ -15,9 +15,13 @@
   vars:
 
     debian_packages:
+      - build-essential
       - python3
       - python3-pip
+      - python3-dev
+      - python3-rpi-lgpio
       - vim
+      - git
 
   tasks:
 
@@ -28,15 +32,22 @@
         update_cache: yes
         cache_valid_time: 604800 # 1 week = 7 * 24 * 3600 seconds
 
+    - name: "Uninstall old python3-rpi-gpio"
+      become: yes
+      apt:
+        name: "python3-rpi-gpio"
+        state: "absent"
+
     - name: "Install pip requirements file"
       copy:
         src: ../requirements.txt
         dest: /tmp/requirements_MFRC522-trigger.txt
 
     - name: "Install prerequisite pip packages"
-      pip:
+      ansible.builtin.pip:
         requirements: /tmp/requirements_MFRC522-trigger.txt
-        executable: pip3
+        extra_args: --no-deps
+        break_system_packages: yes
 
 - name: Prepare Raspberry Pi's /boot/config.txt
   hosts: my_pi
@@ -101,6 +112,11 @@
       user: "volumio"
       group: "volumio"
       executable: "/home/volumio/devel/MFRC522-trigger/MFRC522-trigger.py"
+
+#    mfrc522:
+#      user: "pi"
+#      group: "pi"
+#      executable: "/home/pi/devel/MFRC522-trigger/MFRC522-trigger.py"
 
   roles:
 

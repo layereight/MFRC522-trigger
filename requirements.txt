@@ -1,4 +1,5 @@
-RPi.GPIO
+#RPi.GPIO
+rpi-lgpio
 spidev
 pi-rc522==2.3.0
 # works with python 3.4
