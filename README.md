@@ -15,7 +15,7 @@
 # Prerequisites
 
 * python3
-* python modules RPi.GPIO, spidev, pi-rc522, assertpy
+* python modules rpi-lgpio (fka RPi.GPIO), spidev, pi-rc522, assertpy
 * enable the [SPI](https://en.wikipedia.org/wiki/Serial_Peripheral_Interface) on the Raspberry Pi using `raspi-config`
 
 # Manual Installation
@@ -23,9 +23,9 @@
 * ssh into your Raspberry Pi and execute
 ```
 $ sudo apt-get update
-$ sudo apt-get install python3 python3-pip vim
+$ sudo apt-get install python3 python3-pip vim git liblgpio-dev
 $ git clone https://github.com/layereight/MFRC522-trigger.git
-$ sudo pip3 install -r MFRC522-trigger/requirements.txt
+$ sudo pip3 install --no-deps -r MFRC522-trigger/requirements.txt
 ```
 * edit Raspberry Pi's */boot/config.txt*: `$ sudo vi /boot/config.txt`
 * add the following lines somewhere in the file
