@@ -39,7 +39,51 @@
                 "title": "Command to execute when the tag is detected."
               }
             }
-          }
+          },
+	  {
+		  "type": "object",
+		  "title": "Play Action",
+		  "required": ["type"],
+		  "additionalProperties": false,
+		  "properties": {
+			  "type": {
+				  "type": "string",
+				  "title": "Type of action. Must be 'play'.",
+				  "patter": "^play$"
+			  }
+		  }
+	  },
+	  {
+		  "type": "object",
+		  "title": "Pause Action",
+		  "required": ["type"],
+		  "additionalProperties": false,
+		  "properties": {
+			  "type": {
+				  "type": "string",
+				  "title": "Type of action. Must be 'pause'.",
+				  "patter": "^pause$"
+			  }
+		  }
+	  }, 
+	  {
+		  "type": "object",
+		  "title": "Set Volume",
+		  "required": ["type", "value"],
+		  "additionalProperties": false,
+		  "properties": {
+			  "type": {
+				  "type": "string",
+				  "title": "Type of action. Must be 'volume'.",
+				  "pattern": "^volume$"
+			  },
+			  "value": {
+				  "type": "string",
+				  "title": "Must be a volume 'value' as int [0,100]."
+			  }
+
+		  }
+	  }
         ]
       }
     }
