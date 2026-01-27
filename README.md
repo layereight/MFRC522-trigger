@@ -23,7 +23,7 @@
 * ssh into your Raspberry Pi and execute
 ```
 $ sudo apt-get update
-$ sudo apt-get install python3 python3-pip vim git liblgpio-dev
+$ sudo apt-get install vim git python3 python3-pip liblgpio-dev
 $ git clone https://github.com/layereight/MFRC522-trigger.git
 $ sudo pip3 install --no-deps -r MFRC522-trigger/requirements.txt
 ```
@@ -35,6 +35,7 @@ dtoverlay=pi3-disable-bt
 enable_uart=1
 ```
 * reboot: `sudo reboot`
+* copy MFRC522-trigger's sample config file: `cp ~/devel/MFRC522-trigger/config.sample.json ~/devel/MFRC522-trigger/config.json`
 * configure MFRC522-trigger config file `MFRC522-trigger/config.json`
 * run `MFRC522-trigger/MFRC522-trigger.py`
 
