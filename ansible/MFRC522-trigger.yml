@@ -18,8 +18,7 @@
       - build-essential
       - python3
       - python3-pip
-      - python3-dev
-      - python3-rpi-lgpio
+      - liblgpio-dev
       - vim
       - git
 
@@ -79,6 +78,7 @@
 
   vars:
 
+    # TODO: make global variable
     target_dir: "devel/MFRC522-trigger"
 
   tasks:
@@ -103,20 +103,18 @@
 
 - name: Install MFRC522-trigger as systemd service
   hosts: my_pi
-  gather_facts: false
+  gather_facts: true
   tags: [ systemd ]
 
   vars:
 
-    mfrc522:
-      user: "volumio"
-      group: "volumio"
-      executable: "/home/volumio/devel/MFRC522-trigger/MFRC522-trigger.py"
+    # TODO: make global variable
+    target_dir: "devel/MFRC522-trigger"
 
-#    mfrc522:
-#      user: "pi"
-#      group: "pi"
-#      executable: "/home/pi/devel/MFRC522-trigger/MFRC522-trigger.py"
+    mfrc522:
+      user: "{{ ansible_facts['user_uid'] }}"
+      group: "{{ ansible_facts['user_gid'] }}"
+      executable: "{{ ansible_facts['env'].HOME }}/{{ target_dir }}/MFRC522-trigger.py"
 
   roles:
 
