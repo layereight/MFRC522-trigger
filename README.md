@@ -23,7 +23,7 @@
 * ssh into your Raspberry Pi and execute
 ```
 $ sudo apt-get update
-$ sudo apt-get install vim git python3 python3-pip liblgpio-dev
+$ sudo apt-get install build-essential vim git python3 python3-pip python3-dev liblgpio-dev
 $ git clone https://github.com/layereight/MFRC522-trigger.git
 $ sudo pip3 install --no-deps -r MFRC522-trigger/requirements.txt
 ```
