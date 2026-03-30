@@ -5,6 +5,7 @@ import pirc522
 import sys
 from os import path
 import urllib.request
+import urllib.parse
 import subprocess
 import time
 import json
@@ -18,12 +19,25 @@ from config import validate_config
 pathname = path.dirname(path.abspath(__file__))
 logging.config.fileConfig(pathname + '/logging.ini')
 config = json.load(open(pathname + '/config.json', encoding="utf-8"))
+baseurl = "http://localhost:3000/api/v1/commands/"
 
+
+"""
+Mayba need to implement a web radio play command
+curl -i --header "Content-Type: application/json" localhost:3000/api/v1/replaceAndPlay --data '{"service": "webradio", "type": "webradio", "title": "Bayern3", "uri": "http://opml.radiotime.com/Tune.ashx?id=s14991"}'
+
+"""
 
 def execute_curl(url):
     logging.info("Gonna curl '" + url + "'")
     try:
-        urllib.request.urlopen(url)
+        html = urllib.request.urlopen(url)
+        html_read = html.read()
+        j = json.loads(html_read.decode("utf-8"))
+        if j["Error"]:
+            logging.error(f'{j["Error"]}')
+        elif j["response"]:
+            logging.info(f'{j["response"]}')
     except Exception:
         logging.error("Unable to open url " + url, sys.exc_info()[0])
 
@@ -33,9 +47,38 @@ def execute_command(command):
     subprocess.call(command, shell=True, stdout=subprocess.DEVNULL)
 
 
+def execute_playlist(playlistname):
+    playlistname = urllib.parse.quote(playlistname)
+    logging.info("Gonna execute '" + playlistname + "'")
+    execute_curl(f"{baseurl}?cmd=playplaylist&name={playlistname}")
+
+
+def execute_play():
+    logging.info("Gonna execute play")
+    execute_curl(f"{baseurl}?cmd=play")
+
+
+def execute_pause():
+    logging.info("Gonna execute pause")
+    execute_curl(f"{baseurl}?cmd=pause")
+
+
+def execute_volume(volume):
+    try:
+        volume = int(volume)
+    except ValueError as e:
+        logging.error(f"given volume is not an int.")
+    logging.info(f"Set volume to {volume}")
+    execute_curl(f"{baseurl}?cmd=volume&volume={volume}")
+
+
 ACTION_MAP = {
     "curl": lambda action: execute_curl(action["url"]),
-    "command": lambda action: execute_command(action["command"])
+    "command": lambda action: execute_command(action["command"]),
+    "list": lambda action: execute_playlist(action["name"]),
+    "play": lambda action: execute_play(),
+    "pause": lambda action: execute_pause(),
+    "volume": lambda action: execute_volume(action["value"])
 }
 
 
